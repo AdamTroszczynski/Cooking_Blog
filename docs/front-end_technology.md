@@ -1,0 +1,10 @@
+﻿|  Front-end Technology  |     Logo     |
+|:----------------------:|:------------:|
+|           TS           |   ![TS](https://camo.githubusercontent.com/ee71fcc1aa3d059265517741dffc4161922fd744377e7a5f07c43381d0aa9aac/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f747970657363726970742d2532333030374143432e7376673f7374796c653d666f722d7468652d6261646765266c6f676f3d74797065736372697074266c6f676f436f6c6f723d7768697465)  |
+|          Vue           |  ![VueJS](https://camo.githubusercontent.com/372b662f4b2de885acce0f4619ab56a4ed9259d577cbdac8933b293d6e6f9f3f/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f7675656a732d2532333335343935652e7376673f7374796c653d666f722d7468652d6261646765266c6f676f3d767565646f746a73266c6f676f436f6c6f723d253233344643303844)  |
+|         Pinia          |  |
+|       Tailwind         |![Tailwind](https://camo.githubusercontent.com/ec8056bddf659d21de39b358d9786e56731cd767117e091348411666a5e7eee6/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f7461696c77696e646373732d2532333338423241432e7376673f7374796c653d666f722d7468652d6261646765266c6f676f3d7461696c77696e642d637373266c6f676f436f6c6f723d7768697465)|
+|         Vite           |  ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)  |
+|        Vitest          |  |
+|        Cypress         |![cypress](https://img.shields.io/badge/-cypress-%23E5E5E5?style=for-the-badge&logo=cypress&logoColor=058a5e)|
+
