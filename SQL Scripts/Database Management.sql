@@ -27,6 +27,10 @@ INSERT INTO "favourite" ("userId", "recipeId")
 VALUES (1, 1);
 --VALUES (user_input_userId, user_input_recipeId);
 
+INSERT INTO "likes" ("userId", "recipeId")
+VALUES (1, 1);
+-- VALUES (user_input_userId, user_input_recipeId);
+
 INSERT INTO "stats" ("userId", "comments", "recipes", "favourites") 
 VALUES (1, 5, 10, 3);
 --VALUES (user_input_userId, user_input_comments, user_input_recipes, user_input_favourites);
