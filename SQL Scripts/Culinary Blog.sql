@@ -116,6 +116,20 @@ CREATE TABLE favourite (
     ON DELETE CASCADE
 );
 
+CREATE TABLE likes (
+  likeId SERIAL UNIQUE PRIMARY KEY,
+  userId INTEGER,
+  recipeId INTEGER,
+  CONSTRAINT fk_users_likes
+    FOREIGN KEY(userId) 
+    REFERENCES users(userId)
+    ON DELETE CASCADE,
+  CONSTRAINT fk_recipes_likes
+    FOREIGN KEY(recipeId) 
+    REFERENCES recipes(recipeId)
+    ON DELETE CASCADE
+);
+
 CREATE TABLE stats (
   statId SERIAL UNIQUE PRIMARY KEY,
   userId INTEGER,
