@@ -11,10 +11,6 @@ INSERT INTO "comments" ("userId", "recipeId", "content")
 VALUES (1, 1, 'This recipe is amazing!');
 --VALUES (user_input_userId, user_input_recipeId, 'user_input_content');
 
-INSERT INTO "rates" ("rate", "userId", "recipeId") 
-VALUES (5, 1, 1);
---VALUES (user_input_rate, user_input_userId, user_input_recipeId);
-
 INSERT INTO "follows" ("follower", "following") 
 VALUES (1, 2);
 --VALUES (user_input_followerId, user_input_followingId);

@@ -58,21 +58,6 @@ CREATE TABLE comments (
     ON DELETE CASCADE
 );
 
-CREATE TABLE rates (
-  rateId SERIAL UNIQUE PRIMARY KEY,
-  rate INTEGER,
-  userId INTEGER,
-  recipeId INTEGER,
-  CONSTRAINT fk_users_rates
-    FOREIGN KEY(userId) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE,
-  CONSTRAINT fk_recipes_rates
-    FOREIGN KEY(recipeId) 
-    REFERENCES recipes(recipeId)
-    ON DELETE CASCADE
-);
-
 CREATE TABLE follows (
   followId SERIAL UNIQUE PRIMARY KEY,
   follower INTEGER,
