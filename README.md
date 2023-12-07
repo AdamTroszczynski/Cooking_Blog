@@ -4,7 +4,7 @@
 | Name | Role |
 |---|---|
 | Mikołaj Szymczuk | `Frontend`,`Backend Support`, `Database Support`,`Testing support` |
-| Adam Troszczyński | `Frontend`,`Backend support`, `Database Support`,`Testing support` |
+| Adam Troszczyński | `Frontend`, `Database Support`,`Testing support` |
 | Gracjan Janiszewski | `Testing` (Unit, E2E, Integration, Finding bugs and problems with app), `Database Support` |
 | Aleksander Nowacki | `Backend`, `Database` |
 | Bartłomiej Muszyński | `Backend`, `Database` |
