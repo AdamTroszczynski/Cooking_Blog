@@ -73,12 +73,34 @@ and then you can run tests
 npm run test:e2e
 ```
 
+### [ Database ]
+
+#### Requirements:
+- Postgresql server
+- Some client for Postgresql ([DataGrip](https://www.jetbrains.com/datagrip/?source=google&medium=cpc&campaign=EMEA_en_PL_DataGrip_Branded&term=datagrip&content=555122603706&gad=1&gclid=CjwKCAiA1MCrBhAoEiwAC2d64a92Dslmaw4l5vO643oLb8gHv2dxRpahbWFs2vdcGVfMBEEh9jCgLRoCK3IQAvD_BwE), [PgAdmin](https://www.pgadmin.org/download/))
+
+---
+
+Install PostgreSQL server
+
+Then create two databases `cookingBlog` and `cookingBlog_test`
+
+For example on postgres account you can type
+```sh
+createdb cookingBlog
+createdb cookingBlog_test
+```
+
+Or you can create databases in PgAdmin
+
+Next you need to create all tables structure, in your postgresql client or by using terminal run script `cookingBlogInit.sql`
+
+At the end you can run insert script `insertBasicData.sql` to insert some testing data to database
+
 ### [ Server ]
 
 #### Requirements:
 - Node version >= 16
-- Postgresql server
-- Some client for Postgresql ([DataGrip](https://www.jetbrains.com/datagrip/?source=google&medium=cpc&campaign=EMEA_en_PL_DataGrip_Branded&term=datagrip&content=555122603706&gad=1&gclid=CjwKCAiA1MCrBhAoEiwAC2d64a92Dslmaw4l5vO643oLb8gHv2dxRpahbWFs2vdcGVfMBEEh9jCgLRoCK3IQAvD_BwE), [PgAdmin](https://www.pgadmin.org/download/))
 
 ---
 
@@ -93,6 +115,11 @@ Create `.env` file with all environment variables (<b>port 8080 is important bec
 
 ```txt
 PORT=8080
+DB_USER=[user]
+DB_HOST=[host]
+DB_NAME=[database name]
+DB_PASSWORD=[password]
+DB_PORT=[database port]
 ```
 
 To run project
