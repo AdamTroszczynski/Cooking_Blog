@@ -93,6 +93,11 @@ Create `.env` file with all environment variables (<b>port 8080 is important bec
 
 ```txt
 PORT=8080
+DB_HOST=YourHostName
+DB_PORT=YourPort
+DB_USER=YourUser
+DB_PASSWORD=YourPassword
+DB_NAME=YourDatbaseName
 ```
 
 To run project
