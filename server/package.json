@@ -11,14 +11,21 @@
     "dev:server": "webpack && nodemon \"./dist/app.js\" --watch \"./dist\""
   },
   "keywords": [],
-  "authors": ["Mikołaj Szymczuk", "Adam Troszczyński", "Gracjan Janiszewski", "Bartłomiej Muszyński", "Aleksander Nowacki"],
+  "authors": [
+    "Mikołaj Szymczuk",
+    "Adam Troszczyński",
+    "Gracjan Janiszewski",
+    "Bartłomiej Muszyński",
+    "Aleksander Nowacki"
+  ],
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "helmet": "^7.0.0"
+    "helmet": "^7.0.0",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.14",
