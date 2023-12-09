@@ -1,7 +1,7 @@
 <template>
-  <routerLink :to="linkTarget" class="link link-neutral no-underline font-[playfair] font-normal text-[15px] text-black">
-      <slot></slot>
-  </routerLink>
+  <RouterLink :to="linkTarget" class="link link-neutral no-underline font-[playfair] font-normal text-[15px] text-black">
+    <slot></slot>
+  </RouterLink>
 </template>
 
 <script setup lang="ts">
