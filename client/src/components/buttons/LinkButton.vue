@@ -1,12 +1,12 @@
 <template>
-  <router-link :to="linkTarget">
-    <span class="link link-neutral text-black font-[playfair] text-[15px] font-normal no-underline">
+  <routerLink :to="linkTarget" class="link link-neutral no-underline font-[playfair] font-normal text-[15px] text-black">
       <slot></slot>
-    </span>
-  </router-link>
+  </routerLink>
 </template>
 
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
+
 defineProps({
   linkTarget: {
     type: String,
