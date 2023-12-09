@@ -1,8 +1,10 @@
 <template>
-  <button class="px-6 btn" :class="[setButtonColor, setButtonBorder]">
-    <span class="font-[merri] text-[15px] font-black text-white normal-case"
-      ><slot></slot>
-    </span>
+  <button
+    @click="emit('clickAction')"
+    class="btn font-[merri] font-black normal-case px-6 text-[15px] text-white"
+    :class="[setButtonColor, setButtonBorder]"
+  >
+    <slot></slot>
   </button>
 </template>
 
@@ -35,4 +37,9 @@ const setButtonColor = computed((): string =>
 const setButtonBorder = computed((): string =>
   prop.biggerBorderRadius ? "rounded-[12px]" : "rounded-[8px]"
 );
+
+const emit = defineEmits<{
+  /** Emit event after click button */
+  (e: "clickAction"): void;
+}>();
 </script>
