@@ -1,9 +1,9 @@
 import express, { Express } from 'express';
+import path from 'path';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
 import { json } from 'body-parser';
-
 import api from '@/router/api';
 
 dotenv.config();
@@ -13,6 +13,7 @@ const app: Express = express();
 app.use(json());
 app.use(helmet());
 app.use(cors());
+app.use('/static', express.static(path.join(__dirname, '../public')));
 app.use('/api', api);
 
 const port = process.env.PORT || 3000;

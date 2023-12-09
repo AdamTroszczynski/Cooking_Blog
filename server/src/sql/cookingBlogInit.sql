@@ -1,128 +1,87 @@
-CREATE TYPE difficulty AS ENUM (
-  'easy',
-  'medium',
-  'hard'
+-- Users table
+CREATE TABLE IF NOT EXISTS users (
+  userId INT NOT NULL PRIMARY KEY UNIQUE,
+  username VARCHAR(255) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL,
+  passwordHash VARCHAR(255) NOT NULL,
+  registered TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TYPE dishType AS ENUM (
-  'Breakfast',
-  'Lunch',
-  'Dinner',
-  'Snack',
-  'Appetizer',
-  'MainCourse',
-  'Dessert',
-  'Salad',
-  'Soup',
-  'Beverage'
+-- Difficult levels table
+CREATE TABLE IF NOT EXISTS difficultLevels (
+  difficultLevelId INT NOT NULL PRIMARY KEY UNIQUE,
+  levelName VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE users (
-  userId SERIAL UNIQUE PRIMARY KEY,
-  username VARCHAR(255) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  firstname VARCHAR(255),
-  lastname VARCHAR(255),
-  age INTEGER,
-  registered TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- Dish type table
+CREATE TABLE IF NOT EXISTS dishTypes (
+  dishTypeId INT NOT NULL PRIMARY KEY UNIQUE,
+  dishTypeName VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE recipes (
-  recipeId SERIAL UNIQUE PRIMARY KEY,
-  name VARCHAR(255),
-  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  difficulty difficulty,
-  userId INTEGER,
+-- Recipes table
+CREATE TABLE IF NOT EXISTS recipes (
+  recipeId INT NOT NULL PRIMARY KEY UNIQUE,
+  recipeName VARCHAR(255),
+  created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  difficultLevelId INT NOT NULL,
+  dishTypeId INT NOT NULL,
+  userId INT NOT NULL,
   steps VARCHAR(500),
-  ingredients VARCHAR(500),
-  dishType dishType,
-  CONSTRAINT fk_users
-    FOREIGN KEY(userId) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE
+  ingredients varchar(350),
+  recipeImage varchar(255),
+  likesCount INT NOT NULL,
+  FOREIGN KEY (dishTypeId)
+    REFERENCES dishTypes (dishTypeId),
+  FOREIGN KEY (difficultLevelId)
+    REFERENCES  difficultLevels (difficultLevelId),
+  FOREIGN KEY (userId)
+    REFERENCES users (userId)
 );
 
-CREATE TABLE comments (
-  commentId SERIAL UNIQUE PRIMARY KEY,
-  userId INTEGER,
-  recipeId INTEGER,
-  content VARCHAR(500),
-  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT fk_users_comments
-    FOREIGN KEY(userId) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE,
-  CONSTRAINT fk_recipes_comments
-    FOREIGN KEY(recipeId) 
-    REFERENCES recipes(recipeId)
-    ON DELETE CASCADE
+-- Tags table
+CREATE TABLE IF NOT EXISTS tags (
+  tagId INT NOT NULL PRIMARY KEY UNIQUE,
+  tagName VARCHAR(255) NOT NULL,
+  userId INT NOT NULL,
+  recipeId INT NOT NULL,
+  FOREIGN KEY (userId)
+    REFERENCES users (userId),
+  FOREIGN KEY (recipeId)
+    REFERENCES recipes (recipeId)
 );
 
-CREATE TABLE follows (
-  followId SERIAL UNIQUE PRIMARY KEY,
-  follower INTEGER,
-  following INTEGER,
-  CONSTRAINT fk_users_follows_follower
-    FOREIGN KEY(follower) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE,
-  CONSTRAINT fk_users_follows_following
-    FOREIGN KEY(following) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE
+-- Likes table
+CREATE TABLE IF NOT EXISTS likes (
+  likeId INT NOT NULL PRIMARY KEY UNIQUE,
+  userId INT NOT NULL,
+  recipeId INT NOT NULL,
+  FOREIGN KEY (userId)
+    REFERENCES users (userId),
+  FOREIGN KEY (recipeId)
+    REFERENCES recipes (recipeId)
 );
 
-CREATE TABLE tags (
-  tagId SERIAL UNIQUE PRIMARY KEY,
-  name VARCHAR(255),
-  userId INTEGER,
-  recipeId INTEGER,
-  CONSTRAINT fk_users_tags
-    FOREIGN KEY(userId) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE,
-  CONSTRAINT fk_recipes_tags
-    FOREIGN KEY(recipeId) 
-    REFERENCES recipes(recipeId)
-    ON DELETE CASCADE
+-- Favorite table
+CREATE TABLE IF NOT EXISTS favorite (
+  favoriteId INT NOT NULL PRIMARY KEY UNIQUE,
+  userId INT NOT NULL,
+  recipeId INT NOT NULL,
+  FOREIGN KEY (userId)
+    REFERENCES users (userId),
+  FOREIGN KEY (recipeId)
+    REFERENCES recipes (recipeId)
 );
 
-CREATE TABLE favourite (
-  favouriteId SERIAL UNIQUE PRIMARY KEY,
-  userId INTEGER,
-  recipeId INTEGER,
-  CONSTRAINT fk_users_favourite
-    FOREIGN KEY(userId) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE,
-  CONSTRAINT fk_recipes_favourite
-    FOREIGN KEY(recipeId) 
-    REFERENCES recipes(recipeId)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE likes (
-  likeId SERIAL UNIQUE PRIMARY KEY,
-  userId INTEGER,
-  recipeId INTEGER,
-  CONSTRAINT fk_users_likes
-    FOREIGN KEY(userId) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE,
-  CONSTRAINT fk_recipes_likes
-    FOREIGN KEY(recipeId) 
-    REFERENCES recipes(recipeId)
-    ON DELETE CASCADE
-);
-
-CREATE TABLE stats (
-  statId SERIAL UNIQUE PRIMARY KEY,
-  userId INTEGER,
-  comments INTEGER,
-  recipes INTEGER,
-  favourites INTEGER,
-  CONSTRAINT fk_users_stats
-    FOREIGN KEY(userId) 
-    REFERENCES users(userId)
-    ON DELETE CASCADE
+-- Comments table
+CREATE TABLE IF NOT EXISTS comments (
+  commentId INT NOT NULL PRIMARY KEY UNIQUE,
+  userId INT NOT NULL,
+  recipeId INT NOT NULL,
+  content VARCHAR(300) NOT NULL,
+  created TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (userId)
+    REFERENCES users (userId),
+  FOREIGN KEY (recipeId)
+    REFERENCES recipes (recipeId)
 );
