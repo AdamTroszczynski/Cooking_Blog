@@ -1,5 +1,8 @@
 <template>
-  <RouterLink :to="linkTarget" class="link link-neutral no-underline font-[playfair] font-normal text-[15px] text-black">
+  <RouterLink
+    class="link link-neutral no-underline font-playfair font-normal text-[.9375rem] text-black"
+    :to="linkTarget"
+  >
     <slot></slot>
   </RouterLink>
 </template>
