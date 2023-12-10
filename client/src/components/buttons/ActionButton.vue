@@ -1,6 +1,6 @@
 <template>
   <button
-    class="btn px-6 font-merri font-black normal-case text-[.9375rem] text-white"
+    class="btn px-6 font-merri font-black normal-case text-[.9375rem] text-white leading-[0]"
     @click="emitEvent()"
     :class="[setButtonColor, setButtonBorder]"
   >
