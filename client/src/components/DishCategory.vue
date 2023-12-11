@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col justify-center">
 <h2 class="text-black text-[1.125rem] font-playfair pb-[20px]">Select dish category</h2>
-<ul class="text-black flex flex-wrap gap-[20px]">
+<ul class="text-black flex flex-wrap gap-[20px] justify-center items-center">
     <li v-for="dish in dishes" :key="dish.name" class="flex flex-col justify-center items-center">
         <categoryBox @click-action="setActive" class="w-[78px] h-[78px]" :isSelected="dish.name === isActive" :name="dish.name"><component :is="dish.component" :isActive="dish.name === isActive"></component></categoryBox>
         <h3 class="mt-[8px] font-playfair text-[0.75rem]">{{ dish.name }}</h3>
