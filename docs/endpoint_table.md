@@ -1,10 +1,8 @@
-
-
 | Method | API Endpoint   | Parameters Type | Query Parameters |  Data |  Description |
 |:-:|:-:|:-:|:-:|:-:|:-:|
 | GET  |  /api/recipes |  - | ?recipeId=int, ?userId=int, ?difficulty=string , ?start, ?count | - | Return recipes of said parameters  |
 | GET  |  /api/recipes |  - | - | - | Return all created recipes from database  |
-| GET  |  /api/recipes/id |  int | - | - | Return a recipe of said ID from database  |	
+| GET  |  /api/recipes/id |  int | - | - | Return a recipe of said ID from database  |
 | PUT | /api/recipes/id | int | - | token | Updates recipe of said ID |
 | PUT | /api/comments/id | int | - | token | Updates comment of said ID |
 | DELETE | /api/recipes/id | int | - | token | Deletes recipe of said ID |
