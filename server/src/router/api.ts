@@ -1,8 +1,10 @@
 import express from 'express';
-import { getMessage } from '@/controller/exampleController';
+import { getAllRecipesAction, getNewestRecipesAction } from '@/controller/recipeController';
 
 const api = express.Router();
 
-api.get('/hello', getMessage);
+api.get('/recipes', getAllRecipesAction);
+
+api.get('/newestRecipes', getNewestRecipesAction);
 
 export default api;
