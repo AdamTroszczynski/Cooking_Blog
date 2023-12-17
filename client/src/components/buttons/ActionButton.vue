@@ -1,18 +1,20 @@
 <template>
   <button
-    class="btn font-merri font-black normal-case text-[.9375rem] text-white leading-[0]"
-    @click="emitEvent()"
-    :class="[setButtonColor, setButtonBorder]"
+    class="btn px-[19px] h-[36px] min-h-[auto] font-merri font-black normal-case text-[.75rem] text-white
+      md:h-[48px] md:px-[26px] md:text-[.9375rem]"
+    @click="emitClickEvent()"
+    :class="[
+      isColored ? 'bg-blue' : 'bg-black',
+      biggerBorderRadius ? 'rounded-[8px]' : 'rounded-[6px] md:rounded-[8px]'
+    ]"
   >
     <slot></slot>
   </button>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-
-const prop = defineProps({
-  isBlue: {
+defineProps({
+  isColored: {
     type: Boolean,
     default: false,
   },
@@ -27,18 +29,6 @@ const emit = defineEmits<{
   (e: "clickAction"): void;
 }>();
 
-/** Emit event after click action */
-const emitEvent = () => emit('clickAction');
-
-/**
- * Return status button classes
- * @returns {string} status button classes
- */
-const setButtonColor = computed((): string => prop.isBlue ? "bg-[blue]" : "bg-[#000000]");
-
-/**
- * Return status button classes
- * @returns {string} status button classes
- */
-const setButtonBorder = computed((): string => prop.biggerBorderRadius ? "rounded-[12px]" : "rounded-[8px]");
+/** Emit click action event */
+const emitClickEvent = () => emit('clickAction');
 </script>
