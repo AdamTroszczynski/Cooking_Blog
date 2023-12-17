@@ -1,7 +1,7 @@
 <template>
   <RouterLink
-    class="link link-neutral no-underline font-playfair font-normal text-[.9375rem] text-black"
-    :to="linkTarget"
+    class="link link-neutral no-underline font-playfair font-normal text-[.75rem] text-black lg:text-[.9375rem]"
+    :to="goTo"
   >
     <slot></slot>
   </RouterLink>
@@ -11,7 +11,7 @@
 import { RouterLink } from 'vue-router'
 
 defineProps({
-  linkTarget: {
+  goTo: {
     type: String,
     required: true,
   },
