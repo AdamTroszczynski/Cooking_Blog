@@ -7,7 +7,7 @@
       <LogoIcon class="md:w-auto md:h-[80px] 2xl:h-[100px]" />
     </RouterLink>
 
-    <ActionButton @click-action="goToExplorePage()">
+    <ActionButton @clickAction="goToExplorePage()">
       Explore
     </ActionButton>
 
@@ -57,7 +57,7 @@
 import { ref, type Ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
-import LogoIcon from '@/components/icons/LogoIcon.vue';
+import LogoIcon from '@/components/icons/common/LogoIcon.vue';
 import MenuIcon from '@/components/icons/menu/MenuIcon.vue';
 import ExitMenuIcon from '@/components/icons/menu/ExitMenuIcon.vue';
 import ActionButton from '@/components/buttons/ActionButton.vue';
