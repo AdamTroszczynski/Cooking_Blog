@@ -26,7 +26,7 @@ defineProps({
 
 const emit = defineEmits<{
   /** Emit event after click button */
-  (e: "clickAction"): void;
+  (e: 'clickAction'): void;
 }>();
 
 /** Emit click action event */
