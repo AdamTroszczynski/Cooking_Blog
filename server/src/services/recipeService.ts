@@ -1,7 +1,11 @@
 import { query } from '@/services/db';
+import type { QueryResult } from 'pg';
 
-/** Get all recipes */
-export const getAllRecipes = async () => {
+/**
+ * Get all recipes
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const getAllRecipes = async (): Promise<QueryResult> => {
   const sql = `
     SELECT recipeid, recipename, created, dl.levelname, dt.dishtypename, userid, steps, ingredients, recipeimage, likescount
     FROM recipes
@@ -15,8 +19,9 @@ export const getAllRecipes = async () => {
 /**
  * Get newest recipes from specific dish type category
  * @param {number} dishTypeId Dish type id
+ * @returns {Promise<QueryResult>} Query result
  */
-export const getNewestRecipes = async (dishTypeId: number) => {
+export const getNewestRecipes = async (dishTypeId: number): Promise<QueryResult> => {
   const sql = `
     SELECT recipeid, recipename, created, dt.dishtypename, userid, steps, ingredients, recipeimage, likescount
     FROM recipes
