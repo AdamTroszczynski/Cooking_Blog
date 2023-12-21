@@ -3,10 +3,11 @@ import { createPinia } from 'pinia';
 import App from './App.vue';
 import router from './router';
 import axios from 'axios';
+import { BASE_SERVER_URL } from '@/const/commonConst';
 import './assets/css/index.css';
 
 // Set base URL for backend service
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = BASE_SERVER_URL;
 
 const app = createApp(App);
 
