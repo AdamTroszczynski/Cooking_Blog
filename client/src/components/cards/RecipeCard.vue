@@ -1,6 +1,6 @@
 <template>
   <div
-    class="px-[15px] pt-[15px] pb-[18px] border-solid border-[1px] border-black rounded-[15px]
+    class="px-[15px] pt-[15px] pb-[18px] bg-white border-solid border-[1px] border-black rounded-[15px]
       3xl:px-[16px] 3xl:pt-[16px] 3xl:pb-[20px]"
     @click="emitClickedCard()"
   >
