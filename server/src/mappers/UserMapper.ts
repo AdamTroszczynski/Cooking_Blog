@@ -11,7 +11,7 @@ export default class UserMapper {
       obj.userid,
       obj.username,
       obj.email,
-      obj.registered,
+      new Date(obj.registered).getTime(),
     );
   }
 }
