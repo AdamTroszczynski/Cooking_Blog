@@ -22,8 +22,8 @@
     </div>
 
     <div v-if="errorMessage" class="label">
-      <span class="label-text-alt">
-        {{ errorMessage }}
+      <span class="label-text-alt text-pastelRed font-playfair">
+        - {{ errorMessage }}
       </span>
     </div>
   </label>

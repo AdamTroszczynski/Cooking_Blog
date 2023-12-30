@@ -40,7 +40,7 @@
         <LinkButton is-button @click-action="handleLogout()">Logout</LinkButton>
         <div class="w-[1px] h-[22px] ml-[12px] mr-[10px] bg-black lg:h-[33px] lg:mx-[16px]"></div>
         <p class="mr-[16px] text-black text-[.9375rem] font-medium font-playfair lg:mr-[24px] lg:text-[1.25rem]">
-          Jose
+          {{ userStore.user?.username }}
         </p>
         <div class="w-[40px] h-[40px] rounded-[50%] overflow-hidden border-solid border-[1px] border-black lg:w-[58px] lg:h-[58px]">
           <img class="w-full max-h-auto" :src="AvatarTest" alt="avatar" title="avatar">

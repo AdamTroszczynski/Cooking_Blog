@@ -17,6 +17,19 @@ export const login = async (username: string, password: string): Promise<UserTok
 };
 
 /**
+ * Register new user
+ * @param {string} username Username
+ * @param {string} email Email
+ * @param {string} password Password
+ * @returns {Promise<UserToken>} Object with user data and token
+ */
+export const register = async (username: string, email: string, password: string, passwordRepeat: string): Promise<UserToken> => {
+  const response = await axios.post(`${AUTH_API_URL}/register`, { username, email, password, passwordRepeat });
+  const data = response.data;
+  return { user: UserMapper.mapToUser(data.user), token: data.token };
+};
+
+/**
  * Get user data based on valid token
  * @param {string} token Token
  * @returns {Promise<User>} User data
