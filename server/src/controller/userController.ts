@@ -6,7 +6,9 @@ import RequestError from '@/models/errors/RequestError';
 import UserMapper from '@/mappers/UserMapper';
 import { StatusCodesEnum } from '@/enums/StatusCodesEnum';
 import { ErrorMessagesEnum } from '@/enums/ErrorMessagesEnum';
-import { getUserByUsername, getLastUserId, createUser } from '@/services/userService';
+import { getUserByUsername, getUserById, getLastUserId, createUser } from '@/services/userService';
+import type { UserToken } from '@/types/commonTypes';
+import type { TokenRequest } from '@/interfaces/customRequests';
 
 /**
  * Helper function to prepare/create new token
@@ -46,7 +48,8 @@ export const loginAction = async (req: Request, res: Response): Promise<void> =>
 
     if (user.userId && (await bcrypt.compare(password, hash))) {
       const token = createToken(user);
-      res.status(StatusCodesEnum.OK).json({ user, token });
+      const resResult: UserToken = { user, token };
+      res.status(StatusCodesEnum.OK).json(resResult);
       return;
     }
 
@@ -91,8 +94,21 @@ export const registerAction = async (req: Request, res: Response): Promise<void>
     const result = await getUserByUsername(username);
     const user: User = UserMapper.mapToUser(result.rows[0]);
     const token = createToken(user);
-    res.status(StatusCodesEnum.NewResources).json({ user, token });
+    const resResult: UserToken = { user, token };
+    res.status(StatusCodesEnum.NewResources).json(resResult);
   } catch (err) {
     res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
   }
+};
+
+/**
+ * Get user from token action
+ * @param {TokenRequest} req Request
+ * @param {Response} res Response
+ */
+export const getUserFromTokenAction = async (req: TokenRequest, res: Response): Promise<void> => {
+  const id = req.user!.userId;
+  const result = await getUserById(id);
+  const user: User = UserMapper.mapToUser(result.rows[0]);
+  res.status(StatusCodesEnum.OK).json(user);
 };

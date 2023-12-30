@@ -27,7 +27,7 @@
 
       <section class="flex flex-col gap-y-[20px] mb-[65px]">
         <div class="flex gap-[18px]">
-          <LinkButton :go-to="'#/source'">Source</LinkButton>
+          <LinkButton :go-to="'https://github.com/Amanowsky/Cooking_Blog'" is-normal-link>Source</LinkButton>
           <LinkButton :go-to="'#/contact'">Contact</LinkButton>
           <LinkButton :go-to="'#/explore'">Explore</LinkButton>
         </div>

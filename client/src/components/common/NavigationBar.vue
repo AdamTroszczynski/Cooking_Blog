@@ -26,12 +26,18 @@
       </div>
 
       <div class="flex items-end flex-col gap-y-[25px] mb-[37px] lg:flex-row lg:items-center lg:gap-x-[18px] lg:mb-0 lg:mr-[18px]">
-        <LinkButton go-to="#/login">My Recipes</LinkButton>
-        <LinkButton go-to="#/register">Create recipe</LinkButton>
+        <template v-if="userStore.isUserLoggedIn">
+          <LinkButton go-to="#/my-recipes">My Recipes</LinkButton>
+          <LinkButton go-to="#/create-recipe">Create recipe</LinkButton>
+        </template>
+        <template v-else>
+          <LinkButton go-to="login">Login</LinkButton>
+          <LinkButton go-to="register">Create Account</LinkButton>
+        </template>
       </div>
 
-      <div class="flex justify-end items-center pt-[18px] border-t-solid border-t-[1px] border-t-black lg:border-t-0 lg:pt-0">
-        <LinkButton go-to="#/logout">Logout</LinkButton>
+      <div v-if="userStore.isUserLoggedIn" class="flex justify-end items-center pt-[18px] border-t-solid border-t-[1px] border-t-black lg:border-t-0 lg:pt-0">
+        <LinkButton is-button @click-action="handleLogout()">Logout</LinkButton>
         <div class="w-[1px] h-[22px] ml-[12px] mr-[10px] bg-black lg:h-[33px] lg:mx-[16px]"></div>
         <p class="mr-[16px] text-black text-[.9375rem] font-medium font-playfair lg:mr-[24px] lg:text-[1.25rem]">
           Jose
@@ -55,7 +61,8 @@
 
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/userStore';
 
 import LogoIcon from '@/components/icons/common/LogoIcon.vue';
 import MenuIcon from '@/components/icons/menu/MenuIcon.vue';
@@ -65,14 +72,23 @@ import LinkButton from '@/components/buttons/LinkButton.vue';
 
 import AvatarTest from '@/assets/images/AvatarTest.png';
 
+const userStore = useUserStore();
+const router = useRouter();
+
 /** Side menu active status */
 const isMenuActive: Ref<boolean> = ref(false);
 
 /** Toggle side menu active status */
-const toggleMenu = () => {
+const toggleMenu = (): void => {
   isMenuActive.value = !isMenuActive.value;
 };
 
 /** Redirect to explore view */
-const goToExplorePage = () => console.log('Go to explore page');
+const goToExplorePage = (): void => console.log('Go to explore page');
+
+/** Handle logout action */
+const handleLogout = (): void => {
+  userStore.logout();
+  router.push({ name: 'home' });
+};
 </script>
