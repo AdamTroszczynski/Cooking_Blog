@@ -12,6 +12,16 @@ export const getUserByUsername = async (username: string): Promise<QueryResult> 
 }
 
 /**
+ *  Get user by id from database
+ * @param {number} id User id to find
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const getUserById = async (id: number): Promise<QueryResult> => {
+  const sql = 'SELECT userid, username, email, registered FROM users WHERE userid = $1';
+  return await query(sql, [id]);
+};
+
+/**
  * Read last user id from database
  * @returns {Promise<QueryResult>} Query result
  */

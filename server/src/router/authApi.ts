@@ -1,10 +1,13 @@
 import express from 'express';
-import { loginAction, registerAction } from '@/controller/userController';
+import { loginAction, registerAction, getUserFromTokenAction } from '@/controller/userController';
+import { verifyToken } from '@/middleware/auth';
 
 const authApi = express.Router();
 
-authApi.get('/login', loginAction);
+authApi.post('/login', loginAction);
 
-authApi.get('/register', registerAction);
+authApi.post('/register', registerAction);
+
+authApi.post('/userFromToken', verifyToken, getUserFromTokenAction);
 
 export default authApi;

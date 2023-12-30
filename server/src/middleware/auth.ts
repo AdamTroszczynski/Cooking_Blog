@@ -9,7 +9,7 @@ import type { TokenRequest } from '@/interfaces/customRequests';
 
 /**
  * Middleware to verify jwt token from user
- * @param {Request} req Request
+ * @param {TokenRequest} req Request
  * @param {Response} res Response
  * @param {NextFunction} next Next function
  */
