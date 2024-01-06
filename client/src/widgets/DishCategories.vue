@@ -5,7 +5,7 @@
     </h3>
 
     <div
-      class="grid grid-cols-[repeat(auto-fill,minmax(78px,1fr))] gap-[25px] justify-items-start 2xl:gap-[37px]
+      class="grid grid-cols-[repeat(auto-fill,minmax(78px,1fr))] gap-[20px] justify-items-start 2xl:gap-[37px]
         2xl:grid-cols-[repeat(auto-fill,minmax(123px,1fr))]"
     >
       <DishCategoryCard

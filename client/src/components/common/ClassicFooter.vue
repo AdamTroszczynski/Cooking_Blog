@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="flex flex-col relative py-[40px] pl-[40px] pr-[48px] text-black bg-white border rounded-[15px] lg:pt-[60px]
+    class="flex flex-col mt-[279px] relative py-[40px] pl-[40px] pr-[48px] text-black bg-white border rounded-[15px] lg:pt-[60px]
       lg:px-[60px] lg:pb-[63px]"
   >
     <div

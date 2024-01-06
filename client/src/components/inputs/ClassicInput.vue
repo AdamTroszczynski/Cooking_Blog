@@ -36,6 +36,7 @@ import { useField } from 'vee-validate';
 import EmailIcon from '@/components/icons/inputs/EmailIcon.vue';
 import LockIcon from '@/components/icons/inputs/LockIcon.vue';
 import UserIcon from '@/components/icons/inputs/UserIcon.vue';
+import FindIcon from '../icons/inputs/FindIcon.vue';
 
 const props = defineProps({
   name: {
@@ -54,7 +55,7 @@ const props = defineProps({
     type: String,
     default: 'user',
     validator(value: string): boolean {
-      return ['user', 'email', 'lock'].includes(value);
+      return ['user', 'email', 'lock', 'find'].includes(value);
     },
   },
 });
@@ -71,6 +72,7 @@ const getIcon = computed<Component>(() => {
     case 'user': return UserIcon;
     case 'email': return EmailIcon;
     case 'lock': return LockIcon;
+    case 'find': return FindIcon;
     default: return UserIcon;
   }
 });
