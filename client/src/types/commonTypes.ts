@@ -16,3 +16,8 @@ export type RegisterForm = {
   password: string;
   passwordRepeat: string;
 };
+
+export type DishCategory = {
+  name: string;
+  fullName: string;
+};
