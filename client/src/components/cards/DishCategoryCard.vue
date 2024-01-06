@@ -34,7 +34,7 @@ const prop = defineProps({
     type: String,
     required: true,
     validator(value: string): boolean {
-      return ['breakfast', 'dessert', 'drink', 'fastfood', 'lunch', 'pizza'].includes(value);
+      return ['breakfast', 'dessert', 'drinks', 'fastfood', 'lunch', 'pizza'].includes(value);
     },
   }
 });
@@ -49,7 +49,7 @@ const getIcon = computed<Component>(() => {
   switch (prop.name) {
     case 'breakfast': return BreakfastIcon;
     case 'dessert': return DessertIcon;
-    case 'drink': return DrinkIcon;
+    case 'drinks': return DrinkIcon;
     case 'fastfood': return FastfoodIcon;
     case 'lunch': return LunchIcon;
     case 'pizza': return PizzaIcon;

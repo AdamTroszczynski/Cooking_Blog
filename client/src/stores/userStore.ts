@@ -2,6 +2,7 @@ import { ref, type Ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import User from '@/models/User';
 import { cookies } from '@/utils/cookiesClient';
+import { RECIPY_TOKEN_COOKIE_NAME } from '@/const/commonConst';
 
 export const useUserStore = defineStore('userStore', () => {
   const user: Ref<User | null> = ref(null);
@@ -26,7 +27,7 @@ export const useUserStore = defineStore('userStore', () => {
     token.value = newToken;
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + (1 * 60 * 60 * 1000)); // 1h expiration time
-    cookies.set('recipy-user-token', token, { expires: expirationDate });
+    cookies.set(RECIPY_TOKEN_COOKIE_NAME, token, { expires: expirationDate });
     isLogged.value = true;
   };
 
@@ -34,7 +35,7 @@ export const useUserStore = defineStore('userStore', () => {
   const logout = (): void => {
     user.value = null;
     token.value = '';
-    cookies.remove('recipy-user-token');
+    cookies.remove(RECIPY_TOKEN_COOKIE_NAME);
     isLogged.value = false;
   };
 

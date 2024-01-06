@@ -9,10 +9,10 @@
         2xl:grid-cols-[repeat(auto-fill,minmax(123px,1fr))]"
     >
       <DishCategoryCard
-        v-for="dishType in cardsData"
+        v-for="dishType in recipesStore.dishCategories"
         :key="dishType.name"
         :name="dishType.name"
-        :is-selected="selectedCategory === dishType.name"
+        :is-selected="recipesStore.selectedDishCategory === dishType.name"
         @onSelect="handleOnSelect"
       >
         {{ dishType.fullName }}
@@ -22,30 +22,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { useRecipesStore } from '@/stores/recipesStore';
 
 import DishCategoryCard from '@/components/cards/DishCategoryCard.vue';
 
-type CardData = {
-  name: string;
-  fullName: string;
-};
-
-/** Dish cards data */
-const cardsData: CardData[] = [
-  { name: 'breakfast', fullName: 'Breakfast' },
-  { name: 'dessert', fullName: 'Dessert' },
-  { name: 'drink', fullName: 'Drink' },
-  { name: 'fastfood', fullName: 'Fast Food' },
-  { name: 'lunch', fullName: 'Lunch' },
-  { name: 'pizza', fullName: 'Pizza' },
-];
-
-/** Selected dish category */
-const selectedCategory: Ref<string> = ref(cardsData[0].name);
+const recipesStore = useRecipesStore();
 
 /** Change current selected category */
 const handleOnSelect = (newCategory: string) => {
-  selectedCategory.value = newCategory;
+  recipesStore.setDishCategory(newCategory);
 };
 </script>

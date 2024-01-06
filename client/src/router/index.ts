@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
+import { useRecipesStore } from '@/stores/recipesStore';
 import { cookies } from '@/utils/cookiesClient';
 import { getUserFromToken } from '@/services/userServices';
+import { RECIPY_TOKEN_COOKIE_NAME } from '@/const/commonConst';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
@@ -43,15 +45,17 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
-  const token = cookies.get('recipy-user-token');
+  const recipesStore = useRecipesStore();
+  await recipesStore.loadDishCategories(); // Load categories if not loaded
+  const token = cookies.get(RECIPY_TOKEN_COOKIE_NAME);
 
-  if (token) {
+  if (token && !userStore.isUserLoggedIn) {
     try {
       const user = await getUserFromToken(token._value);
       userStore.login(user, token._value);
     } catch (err) {
       userStore.logout();
-      next({ name: 'home' });
+      next({ name: 'login' });
     }
   }
 
