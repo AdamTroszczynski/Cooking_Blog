@@ -65,7 +65,6 @@ const recipesSource = computed<Recipe[]>(() => {
     }
   }
 
-
   return filteredSource;
 });
 
