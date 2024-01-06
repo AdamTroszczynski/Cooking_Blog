@@ -120,7 +120,10 @@ DB_HOST=[host]
 DB_NAME=[database name]
 DB_PASSWORD=[password]
 DB_PORT=[database port]
+TOKEN_KEY=[some strong key string]
 ```
+
+!!! `TOKEN_KEY` is important because, auth logic creates, encodes, decodes JWT tokens with it !!!
 
 To run project
 
