@@ -27,7 +27,7 @@ export const useUserStore = defineStore('userStore', () => {
     token.value = newToken;
     const expirationDate = new Date();
     expirationDate.setTime(expirationDate.getTime() + (1 * 60 * 60 * 1000)); // 1h expiration time
-    cookies.set(RECIPY_TOKEN_COOKIE_NAME, token, { expires: expirationDate });
+    cookies.set(RECIPY_TOKEN_COOKIE_NAME, token.value, { expires: expirationDate });
     isLogged.value = true;
   };
 
