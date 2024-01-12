@@ -51,8 +51,8 @@ router.beforeEach(async (to, from, next) => {
 
   if (token && !userStore.isUserLoggedIn) {
     try {
-      const user = await getUserFromToken(token._value);
-      userStore.login(user, token._value);
+      const user = await getUserFromToken(token);
+      userStore.login(user, token);
     } catch (err) {
       userStore.logout();
       next({ name: 'login' });
