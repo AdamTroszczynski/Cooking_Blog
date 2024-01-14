@@ -86,3 +86,15 @@ export const unlikeRecipe = async (userId: number, recipeId: number): Promise<Qu
   const sql = `DELETE FROM likes WHERE userid = $1 AND recipeid = $2`;
   return await query(sql, [userId, recipeId]);
 };
+
+/**
+ * Add a comment to a specific recipe
+ * @param {number} userId User id
+ * @param {number} recipeId Recipe id
+ * @param {string} comment Comment text
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const addComment = async (userId: number, recipeId: number, comment: string): Promise<QueryResult> => {
+  const sql = `INSERT INTO comments (userid, recipeid, comment) VALUES ($1, $2, $3)`;
+  return await query(sql, [userId, recipeId, comment]);
+};
