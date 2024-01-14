@@ -3,7 +3,7 @@ import RecipeMapper from '@/mappers/RecipeMapper';
 import Recipe from '@/models/Recipe';
 import { StatusCodesEnum } from '@/enums/StatusCodesEnum';
 import { ErrorMessagesEnum } from '@/enums/ErrorMessagesEnum';
-import { getAllRecipes, getNewestRecipes, getDishCategories,getUserRecipes , updateRecipe , likeRecipe } from '@/services/recipeService';
+import { getAllRecipes, getNewestRecipes, getDishCategories,getUserRecipes , updateRecipe , likeRecipe, unlikeRecipe } from '@/services/recipeService';
 import type { DishCategory } from '@/types/commonTypes';
 import RequestError from '@/models/errors/RequestError';
 
@@ -101,6 +101,22 @@ export const likeRecipeAction = async (req: Request, res: Response): Promise<voi
     const recipeId = Number(req.params.recipeId);
     await likeRecipe(userId, recipeId);
     res.status(StatusCodesEnum.OK).json({ message: 'Recipe liked successfully' });
+  } catch (err) {
+    res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
+  }
+};
+
+/**
+ * Unlike recipe action
+ * @param {Request} req Request
+ * @param {Response} res Response
+ */
+export const unlikeRecipeAction = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = Number(req.params.userId);
+    const recipeId = Number(req.params.recipeId);
+    await unlikeRecipe(userId, recipeId);
+    res.status(StatusCodesEnum.OK).json({ message: 'Recipe unliked successfully' });
   } catch (err) {
     res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
   }

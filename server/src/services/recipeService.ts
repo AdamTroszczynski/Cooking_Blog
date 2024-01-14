@@ -75,3 +75,14 @@ export const likeRecipe = async (userId: number, recipeId: number): Promise<Quer
   const sql = `INSERT INTO likes (userid, recipeid) VALUES ($1, $2)`;
   return await query(sql, [userId, recipeId]);
 };
+
+/**
+ * Unlike a specific recipe
+ * @param {number} userId User id
+ * @param {number} recipeId Recipe id
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const unlikeRecipe = async (userId: number, recipeId: number): Promise<QueryResult> => {
+  const sql = `DELETE FROM likes WHERE userid = $1 AND recipeid = $2`;
+  return await query(sql, [userId, recipeId]);
+};
