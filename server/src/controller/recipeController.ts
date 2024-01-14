@@ -56,3 +56,20 @@ export const getDishCategoriesAction = async (req: Request, res: Response): Prom
     res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
   }
 };
+
+
+/**
+ * Get user's recipes action
+ * @param {Request} req Request
+ * @param {Response} res Response
+ */
+export const getUserRecipesAction = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = Number(req.params.userId); // Convert the userId from string to number
+    const result = await getUserRecipes(userId);
+    const recipes: Recipe[] = RecipeMapper.mapToRecipes(result.rows);
+    res.status(StatusCodesEnum.OK).json(recipes);
+  } catch (err) {
+    res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
+  }
+};

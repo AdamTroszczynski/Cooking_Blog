@@ -28,3 +28,14 @@ export const getDishCategories = async (): Promise<QueryResult> => {
   const sql = 'SELECT dishtypeid, dishtypename FROM dishtypes';
   return await query(sql);
 };
+
+
+/**
+ * Get all recipes of a specific user
+ * @param {number} userId User id
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const getUserRecipes = async (userId: number): Promise<QueryResult> => {
+  const sql = 'SELECT recipeid, recipename, created, dl.levelname, dt.dishtypename, userid, steps, ingredients, recipeimage, likescount FROM recipes INNER JOIN difficultlevels dl ON recipes.difficultlevelid = dl.difficultlevelid INNER JOIN dishtypes dt ON recipes.dishtypeid = dt.dishtypeid WHERE userid = $1';
+  return await query(sql, [userId]);
+};
