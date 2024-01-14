@@ -64,3 +64,14 @@ export const updateRecipe = async (recipeId: number, recipeData: Recipe): Promis
     throw new Error('Failed to update recipe');
   }
 };
+
+/**
+ * Like a specific recipe
+ * @param {number} userId User id
+ * @param {number} recipeId Recipe id
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const likeRecipe = async (userId: number, recipeId: number): Promise<QueryResult> => {
+  const sql = `INSERT INTO likes (userid, recipeid) VALUES ($1, $2)`;
+  return await query(sql, [userId, recipeId]);
+};

@@ -3,7 +3,7 @@ import RecipeMapper from '@/mappers/RecipeMapper';
 import Recipe from '@/models/Recipe';
 import { StatusCodesEnum } from '@/enums/StatusCodesEnum';
 import { ErrorMessagesEnum } from '@/enums/ErrorMessagesEnum';
-import { getAllRecipes, getNewestRecipes, getDishCategories,getUserRecipes , updateRecipe } from '@/services/recipeService';
+import { getAllRecipes, getNewestRecipes, getDishCategories,getUserRecipes , updateRecipe , likeRecipe } from '@/services/recipeService';
 import type { DishCategory } from '@/types/commonTypes';
 import RequestError from '@/models/errors/RequestError';
 
@@ -57,7 +57,6 @@ export const getDishCategoriesAction = async (req: Request, res: Response): Prom
   }
 };
 
-
 /**
  * Get user's recipes action
  * @param {Request} req Request
@@ -86,6 +85,22 @@ export const updateRecipeAction = async (req: Request, res: Response): Promise<v
     const result = await updateRecipe(recipeId, recipeData);
     const updatedRecipe: Recipe = RecipeMapper.mapToRecipes(result.rows[0])[0];
     res.status(StatusCodesEnum.OK).json(updatedRecipe);
+  } catch (err) {
+    res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
+  }
+};
+
+/**
+ * Like recipe action
+ * @param {Request} req Request
+ * @param {Response} res Response
+ */
+export const likeRecipeAction = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = Number(req.params.userId);
+    const recipeId = Number(req.params.recipeId);
+    await likeRecipe(userId, recipeId);
+    res.status(StatusCodesEnum.OK).json({ message: 'Recipe liked successfully' });
   } catch (err) {
     res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
   }
