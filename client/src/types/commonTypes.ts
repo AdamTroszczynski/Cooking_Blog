@@ -18,6 +18,12 @@ export type RegisterForm = {
 };
 
 export type DishCategory = {
+  id: number;
   name: string;
   fullName: string;
+};
+
+export type DifficultLevel = {
+  id: number;
+  levelName: string;
 };

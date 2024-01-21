@@ -1,13 +1,14 @@
 import { ref, type Ref, computed } from 'vue';
 import { defineStore } from 'pinia';
-import type { DishCategory } from '@/types/commonTypes';
+import type { DishCategory, DifficultLevel } from '@/types/commonTypes';
 import Recipe from '@/models/Recipe';
-import { getDishCategories } from '@/services/recipesServices';
+import { getDishCategories, getDifficultLevels } from '@/services/recipesServices';
 
 export const useRecipesStore = defineStore('recipesStore', () => {
   const selectedDishCategory: Ref<string> = ref('breakfast');
   const newestRecipes: Ref<Recipe[]> = ref([]);
   const dishCategories: Ref<DishCategory[]> = ref([]);
+  const difficultLevels: Ref<DifficultLevel[]> = ref([]);
 
   /**
    * Get full name of dish category
@@ -40,13 +41,22 @@ export const useRecipesStore = defineStore('recipesStore', () => {
     dishCategories.value = result;
   };
 
+  /** Load difficult levels if not loaded */
+  const loadDifficultLevels = async (): Promise<void> => {
+    if (difficultLevels.value.length !== 0) return;
+    const result = await getDifficultLevels();
+    difficultLevels.value = result;
+  };
+
   return {
     selectedDishCategory,
     newestRecipes,
     dishCategories,
+    difficultLevels,
     getSelectedCategoryFullName,
     setDishCategory,
     setNewestRecipes,
     loadDishCategories,
+    loadDifficultLevels,
   };
 });

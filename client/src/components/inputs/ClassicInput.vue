@@ -4,9 +4,10 @@
       <input
         :id="name"
         style="box-shadow: none;"
-        class="input w-full pl-[22px] pr-[65px] h-[50px] input-bordered rounded-[12px] border-black !bg-transparent font-playfair text-black
+        class="input w-full pl-[22px] h-[50px] input-bordered rounded-[12px] border-black !bg-transparent font-playfair text-black
           text-[.75rem] placeholder-black focus:border-blue focus:outline-none focus-within:outline-none 3xl:h-[58px]
-          3xl:pl-[26px] 3xl:pr-[75px] 3xl:text-[.9375rem]"
+          3xl:pl-[26px] 3xl:text-[.9375rem]"
+        :class="noIcon ? 'pr-[22px] 3xl:pr-[26px]' : 'pr-[65px] 3xl:pr-[75px]'"
         :type="isPassword ? 'password' : 'text'"
         :placeholder="placeholder"
         v-model="value"
@@ -14,6 +15,7 @@
       />
 
       <div
+        v-if="!noIcon"
         class="flex justify-center items-center absolute top-0 right-0 w-[53px] h-[50px] border-l-[1px]
         border-l-black border-l-solid 3xl:w-[61px] 3xl:h-[58px]"
       >
@@ -30,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type Component } from 'vue';
+import { computed, type Component, onMounted } from 'vue';
 import { useField } from 'vee-validate';
 
 import EmailIcon from '@/components/icons/inputs/EmailIcon.vue';
@@ -49,6 +51,14 @@ const props = defineProps({
   isPassword: {
     type: Boolean,
     default: false,
+  },
+  noIcon: {
+    type: Boolean,
+    default: false,
+  },
+  initValue: {
+    type: String,
+    default: '',
   },
   iconType: {
     type: String,
@@ -72,6 +82,12 @@ const getIcon = computed<Component>(() => {
     case 'email': return EmailIcon;
     case 'lock': return LockIcon;
     default: return UserIcon;
+  }
+});
+
+onMounted((): void => {
+  if (props.initValue !== '') {
+    value.value = props.initValue;
   }
 });
 </script>

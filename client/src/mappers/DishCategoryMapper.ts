@@ -8,6 +8,7 @@ export default class DishCategoryMapper {
     */
   public static mapObjectToDishCategory(obj: any): DishCategory {
     return {
+      id: obj.dishtypeid,
       name: (obj.dishtypename as string).replace(' ', '').toLowerCase(),
       fullName: obj.dishtypename
     };

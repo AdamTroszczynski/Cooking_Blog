@@ -9,3 +9,8 @@ export type DishCategory = {
   name: string;
   fullName: string;
 };
+
+export type DifficultLevel = {
+  difficultLevelId: string;
+  levelName: string;
+};
