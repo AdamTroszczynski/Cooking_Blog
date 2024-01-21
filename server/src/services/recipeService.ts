@@ -6,7 +6,7 @@ import type { QueryResult } from 'pg';
  * @returns {Promise<QueryResult>} Query result
  */
 export const getAllRecipes = async (): Promise<QueryResult> => {
-  const sql = ' SELECT recipeid, recipename, created, dl.levelname, dt.dishtypename, userid, steps, ingredients, recipeimage, likescount FROM recipes INNER JOIN difficultlevels dl ON recipes.difficultlevelid = dl.difficultlevelid INNER JOIN dishTypes dt ON recipes.dishtypeid = dt.dishtypeid';
+  const sql = 'SELECT recipeid, recipename, created, dl.levelname, dt.dishtypename, userid, steps, ingredients, recipeimage, likescount FROM recipes INNER JOIN difficultlevels dl ON recipes.difficultlevelid = dl.difficultlevelid INNER JOIN dishTypes dt ON recipes.dishtypeid = dt.dishtypeid';
   return await query(sql);
 };
 
@@ -26,5 +26,14 @@ export const getNewestRecipes = async (dishTypeId: number): Promise<QueryResult>
  */
 export const getDishCategories = async (): Promise<QueryResult> => {
   const sql = 'SELECT dishtypeid, dishtypename FROM dishtypes';
+  return await query(sql);
+};
+
+/**
+ * Get all difficult levels from database
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const getDifficultLevels = async (): Promise<QueryResult> => {
+  const sql = 'SELECT difficultlevelid, levelname FROM difficultlevels';
   return await query(sql);
 };

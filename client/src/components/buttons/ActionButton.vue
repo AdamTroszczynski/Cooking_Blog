@@ -1,10 +1,11 @@
 <template>
   <button
-    class="btn px-[19px] h-[36px] min-h-[auto] font-merri font-black normal-case text-[.75rem] text-white
+    class="btn px-[19px] h-[36px] min-h-[auto] font-merri font-black normal-case text-[.75rem]
       md:h-[48px] md:px-[26px] md:text-[.9375rem]"
     @click="emitClickEvent()"
     :class="[
-      isColored ? 'bg-blue' : 'bg-black',
+      isWhite ? 'bg-white text-black' : 'bg-black text-white',
+      isColored && !isWhite ? 'bg-blue' : 'bg-black',
       biggerBorderRadius ? 'rounded-[8px]' : 'rounded-[6px] md:rounded-[8px]'
     ]"
   >
@@ -15,6 +16,10 @@
 <script setup lang="ts">
 defineProps({
   isColored: {
+    type: Boolean,
+    default: false,
+  },
+  isWhite: {
     type: Boolean,
     default: false,
   },

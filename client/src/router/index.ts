@@ -7,6 +7,7 @@ import { RECIPY_TOKEN_COOKIE_NAME } from '@/const/commonConst';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
+import CreateRecipeView from '@/views/CreateRecipeView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,13 +22,19 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
-      meta: { requiresAuth: false, onlyWhenLogout: true, },
+      meta: { requiresAuth: false, onlyWhenLogout: true },
     },
     {
       path: '/register',
       name: 'register',
       component: RegisterView,
-      meta: { requiresAuth: false, onlyWhenLogout: true, },
+      meta: { requiresAuth: false, onlyWhenLogout: true },
+    },
+    {
+      path: '/create-recipe',
+      name: 'crateRecipe',
+      component: CreateRecipeView,
+      meta: { requiresAuth: true },
     },
     {
       path: '/:pathMatch(.*)*',
@@ -43,10 +50,16 @@ const router = createRouter({
   },
 });
 
-router.beforeEach(async (to, from, next) => {
-  const userStore = useUserStore();
+/** Function to run logic before each route enter */
+const beforeRouteEnterSetup = async (): Promise<void> => {
   const recipesStore = useRecipesStore();
   await recipesStore.loadDishCategories(); // Load categories if not loaded
+  await recipesStore.loadDifficultLevels(); // Load difficult levels if not loaded
+};
+
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+  await beforeRouteEnterSetup();
   const token = cookies.get(RECIPY_TOKEN_COOKIE_NAME);
 
   if (token && !userStore.isUserLoggedIn) {
@@ -55,7 +68,7 @@ router.beforeEach(async (to, from, next) => {
       userStore.login(user, token);
     } catch (err) {
       userStore.logout();
-      next({ name: 'login' });
+      return next({ name: 'login' });
     }
   }
 

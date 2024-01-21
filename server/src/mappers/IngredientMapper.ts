@@ -7,7 +7,7 @@ export default class IngredientMapper {
    * @returns {Ingredient} Ingredient object
    */
   public static mapObjectToIngredient(obj: any): Ingredient {
-    return new Ingredient(obj.name, obj.qua);
+    return new Ingredient(obj.id, obj.name, obj.qua);
   }
 
   /**
@@ -17,9 +17,9 @@ export default class IngredientMapper {
    */
   public static mapToIngredients(data: string): Ingredient[] {
     const ingredients: Ingredient[] = [];
-    this.decodeIngredients(data).forEach((el) => {
+    this.decodeIngredients(data).forEach((el, index) => {
       const [ name, qua ] = el.split('/');
-      ingredients.push(this.mapObjectToIngredient({ name, qua }));
+      ingredients.push(this.mapObjectToIngredient({ id: index + 1, name, qua }));
     });
 
     return ingredients;
