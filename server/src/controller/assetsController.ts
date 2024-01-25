@@ -10,8 +10,11 @@ import { BASE_CLIENT_URL } from '@/const/commonConst';
  * @param {Response} res Response
  */
 export const loadImage = (req: Request, res: Response) => {
-  const imageName = req.params.imageName;
-  const imagePath = path.join(__dirname, '../public/recipeImages', imageName);
+  const { imageName, userFolder } = req.params;
+  const imagePath = userFolder
+    ? path.join(__dirname, `../public/recipeImages`, userFolder, imageName)
+    : path.join(__dirname, `../public/recipeImages`, imageName);
+
   res.set('Access-Control-Allow-Origin', BASE_CLIENT_URL);
   res.set('Cross-Origin-Resource-Policy', 'cross-origin');
   if (existsSync(imagePath)) {

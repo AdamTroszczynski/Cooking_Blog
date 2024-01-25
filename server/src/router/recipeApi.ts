@@ -6,7 +6,9 @@ import {
   uploadRecipeImageAction,
   createRecipeAction,
   getDifficultLevelsAction,
+  getSingleRecipeAction,
 } from '@/controller/recipeController';
+import { verifyToken } from '@/middleware/auth';
 
 const recipeApi = express.Router();
 
@@ -14,12 +16,14 @@ recipeApi.get('/recipes', getAllRecipesAction);
 
 recipeApi.get('/newestRecipes', getNewestRecipesAction);
 
+recipeApi.get('/singleRecipe/:recipeId', getSingleRecipeAction);
+
 recipeApi.get('/dishCategories', getDishCategoriesAction);
 
 recipeApi.get('/difficultLevels', getDifficultLevelsAction);
 
-recipeApi.post('/uploadRecipeImage', uploadRecipeImageAction);
+recipeApi.post('/uploadRecipeImage', verifyToken, uploadRecipeImageAction);
 
-recipeApi.post('/createRecipe', createRecipeAction);
+recipeApi.post('/createRecipe', verifyToken, createRecipeAction);
 
 export default recipeApi;

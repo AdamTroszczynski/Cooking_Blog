@@ -101,6 +101,7 @@ import Ingredient from '@/models/Ingredient';
 import Step from '@/models/Step';
 import { saveRecipe, uploadRecipeImage } from '@/services/recipesServices';
 import { useRecipesStore } from '@/stores/recipesStore';
+import { useUserStore } from '@/stores/userStore';
 
 import NavigationBar from '@/components/common/NavigationBar.vue';
 import ClassicFooter from '@/components/common/ClassicFooter.vue';
@@ -114,6 +115,7 @@ import TextareaInput from '@/components/inputs/TextareaInput.vue';
 import SelectInput from '@/components/inputs/SelectInput.vue';
 
 const recipeStore = useRecipesStore();
+const userStore = useUserStore();
 const router = useRouter();
 const { values } = useForm();
 
@@ -170,8 +172,19 @@ const difficultLevelNames = computed<string[]>(() => recipeStore.difficultLevels
 
 /** Create/Save new recipe */
 const save = async (): Promise<void> => {
-  // await saveRecipe(recipe.value);
-  // await uploadRecipeImage(imageToUpload.value);
+  const preparedRecipeToSave = {
+    recipeName: recipe.value.recipeName,
+    userId: userStore.user?.userId,
+    recipeIngredients: recipe.value.ingredients,
+    recipeSteps: recipe.value.steps,
+    difficultLevel: recipeStore.difficultLevels.filter((dl) => dl.levelName === recipe.value.difficultLevel)[0].id,
+    dishType: recipeStore.dishCategories.filter((dc) => dc.fullName === recipe.value.dishType)[0].id,
+    recipeImage: recipe.value.recipeImage,
+  };
+
+  await saveRecipe(preparedRecipeToSave, userStore.token);
+  await uploadRecipeImage(imageToUpload.value, userStore.user!.userId, userStore.token);
+  router.push({ name: 'home' });
 };
 
 /** Cancel operation and redirect to home view */
@@ -231,7 +244,7 @@ const setDishtype = (option: string): void => {
 
 /** Set recipe image */
 const setRecipeImage = async (e: any) => {
-  recipe.value.recipeImage = (e.target.files[0].name as string).split(' ').join('');
+  recipe.value.recipeImage = userStore.user?.userId + '/' + (e.target.files[0].name as string).split(' ').join('');
   imageToUpload.value = e.target.files;
 };
 </script>

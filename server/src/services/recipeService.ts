@@ -37,3 +37,39 @@ export const getDifficultLevels = async (): Promise<QueryResult> => {
   const sql = 'SELECT difficultlevelid, levelname FROM difficultlevels';
   return await query(sql);
 };
+
+/**
+ * Get last recipe from database
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const getLastRecipeId = async (): Promise<QueryResult> => {
+  const sql = 'SELECT MAX(recipeid) FROM recipes';
+  return await query(sql);
+};
+
+/**
+ * Add new recipe to database
+ * @param {number} recipeId Recipe id
+ * @param {string} recipeName Name of recipe
+ * @param {number} difficultLevelId Difficult level
+ * @param {number} dishTypeId Dish type
+ * @param {number} userId User id
+ * @param {string} steps Steps
+ * @param {string} ingredients Ingredients
+ * @param {string} recipeImage Recipe image
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const createRecipe = async (recipeId: number, recipeName: string, difficultLevelId: number, dishTypeId: number, userId: number, steps: string, ingredients: string, recipeImage: string): Promise<QueryResult> => {
+  const sql = 'INSERT INTO recipes (recipeid, recipename, created, difficultlevelid, dishtypeid, userid, steps, ingredients, recipeimage, likescount) VALUES ($1, $2, CURRENT_TIMESTAMP, $3, $4, $5, $6, $7, $8, 0)';
+  return await query(sql, [recipeId, recipeName, difficultLevelId, dishTypeId, userId, steps, ingredients, recipeImage]);
+};
+
+/**
+ * Get single recipe by id from database
+ * @param {number} recipeId Recipe id
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const getSingleRecipeById = async (recipeId: number): Promise<QueryResult> => {
+  const sql = 'SELECT recipeid, recipename, created, dl.levelname, dt.dishtypename, userid, steps, ingredients, recipeimage, likescount FROM recipes INNER JOIN difficultlevels dl ON recipes.difficultlevelid = dl.difficultlevelid INNER JOIN dishTypes dt ON recipes.dishtypeid = dt.dishtypeid WHERE recipeid = $1';
+  return await query(sql, [recipeId]);
+};
