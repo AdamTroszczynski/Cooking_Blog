@@ -3,6 +3,6 @@ import { loadImage } from '@/controller/assetsController';
 
 const staticAssets = express.Router();
 
-staticAssets.get('/recipeImages/:imageName', loadImage);
+staticAssets.get('/recipeImages/:userFolder?/:imageName', loadImage);
 
 export default staticAssets;

@@ -38,10 +38,14 @@ export const getNewestRecipes = async (): Promise<Recipe[]> => {
 
 /**
  * Save new recipe into database
- * @param {Recipe} recipeToSave New recipe to save
+ * @param {Object} recipeToSave New recipe to save
+ * @param {string} token Token
  */
-export const saveRecipe = async (recipeToSave: Recipe): Promise<Recipe> => {
-  const response = await axios.post(`${RECIPE_API_URL}/createRecipe`, { recipe: recipeToSave });
+export const saveRecipe = async (recipeToSave: any, token: string): Promise<Recipe> => {
+  const response = await axios.post(`${RECIPE_API_URL}/createRecipe`, { recipe: recipeToSave }, {
+    headers: { 'x-access-token': token },
+  });
+
   const data = response.data;
   return RecipeMapper.mapObjectToRecipe(data);
 };
@@ -49,8 +53,21 @@ export const saveRecipe = async (recipeToSave: Recipe): Promise<Recipe> => {
 /**
  * Save new recipe image
  * @param {any} files files to upload
+ * @param {number} userId User id that image is from
+ * @param {string} token Token
  */
-export const uploadRecipeImage = async (files: any): Promise<void> => {
-  await axios.post(`${RECIPE_API_URL}/uploadRecipeImage`, {files},
-    {headers: { 'Content-Type': 'multipart/form-data' }});
+export const uploadRecipeImage = async (files: any, userId: number, token: string): Promise<void> => {
+  await axios.post(`${RECIPE_API_URL}/uploadRecipeImage`, {files, userId},
+    {headers: { 'Content-Type': 'multipart/form-data', 'x-access-token': token }});
+};
+
+/**
+ * Get single recipe with id `recipeId`
+ * @param {number} recipeId Recipe id
+ * @returns {Promise<Recipe>} Recipe object
+ */
+export const getSingleRecipe = async (recipeId: number): Promise<Recipe> => {
+  const response = await axios.get(`${RECIPE_API_URL}/singleRecipe/${recipeId}`);
+  const data = response.data;
+  return RecipeMapper.mapObjectToRecipe(data);
 };
