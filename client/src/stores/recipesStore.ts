@@ -19,6 +19,14 @@ export const useRecipesStore = defineStore('recipesStore', () => {
   });
 
   /**
+   * Get selected dish category id
+   * @returns {number} selected dish category id
+   */
+  const getSelectedDishCategoryId = computed<number>(() => {
+    return dishCategories.value.filter((category) => category.name === selectedDishCategory.value)[0].id;
+  });
+
+  /**
    * Set new value for `selectedDishCategory`
    * @param {string} newCategory New dish category value to set
    */
@@ -54,6 +62,7 @@ export const useRecipesStore = defineStore('recipesStore', () => {
     dishCategories,
     difficultLevels,
     getSelectedCategoryFullName,
+    getSelectedDishCategoryId,
     setDishCategory,
     setNewestRecipes,
     loadDishCategories,
