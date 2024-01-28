@@ -3,16 +3,19 @@ import {
   getAllRecipesAction,
   getNewestRecipesAction,
   getDishCategoriesAction,
-  uploadRecipeImageAction,
-  createRecipeAction,
   getDifficultLevelsAction,
   getSingleRecipeAction,
+  getRecipePageAction,
+  uploadRecipeImageAction,
+  createRecipeAction,
 } from '@/controller/recipeController';
 import { verifyToken } from '@/middleware/auth';
 
 const recipeApi = express.Router();
 
 recipeApi.get('/recipes', getAllRecipesAction);
+
+recipeApi.get('/recipesPage', getRecipePageAction);
 
 recipeApi.get('/newestRecipes', getNewestRecipesAction);
 

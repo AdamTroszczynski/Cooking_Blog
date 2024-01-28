@@ -15,9 +15,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref, type Ref, watch } from 'vue';
 import Recipe from '@/models/Recipe';
-import { getNewestRecipes } from '@/services/recipesServices';
+import { getNewestRecipes, getRecipesPage } from '@/services/recipesServices';
 import { useRecipesStore } from '@/stores/recipesStore';
 
 import RecipeCard from '@/components/cards/RecipeCard.vue';
@@ -39,6 +39,18 @@ const props = defineProps({
   },
 });
 
+/** Source for recipes in infinity scroll widget mode */
+const infinityScrollRecipes: Ref<Recipe[]> = ref([]);
+
+/** Value of scroll Y */
+const scrollY: Ref<number> = ref(window.scrollY);
+
+watch(scrollY, async (newValue: number): Promise<void> => {
+  if (newValue + window.innerHeight >= document.documentElement.scrollHeight) {
+    await loadRecipesPage();
+  }
+});
+
 /**
  * Get recipes data source
  * @returns {Recipe[]} Recipes data source
@@ -51,7 +63,7 @@ const recipesSource = computed<Recipe[]>(() => {
   } else if (!props.infinityScroll) {
     source = recipesStore.newestRecipes;
   } else {
-    source = recipesStore.newestRecipes; // REFACTOR: Change source when infinity scroll feature will work
+    source = infinityScrollRecipes.value;
   }
 
   // Filter by selected category
@@ -69,6 +81,15 @@ const recipesSource = computed<Recipe[]>(() => {
 });
 
 /**
+ * Get last recipe id from filtered array of recipes
+ * @returns {number} Last recipe id from filtered array, if array is empty returns `1`
+ */
+const lastRecipeIdFromCategory = computed<number>(() => {
+  if (recipesSource.value.length === 0) return 1;
+  return recipesSource.value[recipesSource.value.length - 1].recipeId;
+});
+
+/**
  * Open recipe details page after click the recipe card
  * @param {number} recipeId Recipe id
  */
@@ -76,8 +97,23 @@ const openRecipeDetails = (recipeId: number): void => {
   console.log(`Clicked card with id: ${recipeId}`);
 };
 
+/** Load another recipes page */
+const loadRecipesPage = async (): Promise<void> => {
+  const recipesPage = await getRecipesPage(lastRecipeIdFromCategory.value, recipesStore.getSelectedDishCategoryId);
+  infinityScrollRecipes.value = infinityScrollRecipes.value.concat(recipesPage);
+};
+
+/** Logic to do when mount */
+const mountLogic = (): void => {
+  window.addEventListener('scroll', (): void => {
+    scrollY.value = window.scrollY;
+  });
+};
+
 onMounted(async (): Promise<void> => {
-  if (props.ownData || props.infinityScroll) return;
+  mountLogic();
+  if (props.ownData) return;
+  if (props.infinityScroll) { await loadRecipesPage(); return; }
   if (recipesStore.newestRecipes.length !== 0) return;
   const result = await getNewestRecipes();
   recipesStore.setNewestRecipes(result);
