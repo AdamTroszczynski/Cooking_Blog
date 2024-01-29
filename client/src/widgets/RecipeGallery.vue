@@ -4,7 +4,7 @@
       3xl:gap-[54px] 3xl:grid-cols-[repeat(3,346px)]"
   >
     <RecipeCard
-      v-for="recipe in recipesSource"
+      v-for="recipe in searchFilteredSource"
       :key="recipe.recipeId"
       :image="recipe.recipeImage"
       :recipe-name="recipe.recipeName"
@@ -19,10 +19,12 @@ import { onMounted, computed, ref, type Ref, watch } from 'vue';
 import Recipe from '@/models/Recipe';
 import { getNewestRecipes, getRecipesPage } from '@/services/recipesServices';
 import { useRecipesStore } from '@/stores/recipesStore';
+import { useUserStore } from '@/stores/userStore';
 
 import RecipeCard from '@/components/cards/RecipeCard.vue';
 
 const recipesStore = useRecipesStore();
+const userStore = useUserStore();
 
 const props = defineProps({
   ownData: {
@@ -40,6 +42,10 @@ const props = defineProps({
   userRecipes: {
     type: Boolean,
     default: false,
+  },
+  searchValue: {
+    type: String,
+    default: '',
   },
 });
 
@@ -90,6 +96,14 @@ const recipesSource = computed<Recipe[]>(() => {
 });
 
 /**
+ * Get recipes filtered byt `search value` prop
+ * @returns {Recipe[]} Array of recipes filtered by search value prop
+ */
+const searchFilteredSource = computed<Recipe[]>(() => {
+  return recipesSource.value.filter((recipe) => recipe.recipeName.includes(props.searchValue));
+});
+
+/**
  * Get last recipe id from filtered array of recipes
  * @returns {number} Last recipe id from filtered array, if array is empty returns `1`
  */
@@ -136,7 +150,7 @@ const openRecipeDetails = (recipeId: number): void => {
 
 /** Load another recipes page */
 const loadRecipesPage = async (): Promise<void> => {
-  const recipesPage = await getRecipesPage(lastRecipeIdFromCategory.value, recipesStore.getSelectedDishCategoryId);
+  const recipesPage = await getRecipesPage(lastRecipeIdFromCategory.value, recipesStore.getSelectedDishCategoryId, 10, props.userRecipes, userStore.user?.userId, userStore.token);
   if (!props.userRecipes) {
     recipesStore.exploreRecipes = recipesStore.exploreRecipes.concat(recipesPage);
   } else {

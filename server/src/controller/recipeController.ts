@@ -13,6 +13,7 @@ import {
   createRecipe,
   getSingleRecipeById,
   getRecipesPage,
+  getRecipesPageUser,
 } from '@/services/recipeService';
 import type { DishCategory, DifficultLevel } from '@/types/commonTypes';
 import RequestError from '@/models/errors/RequestError';
@@ -36,14 +37,30 @@ export const getAllRecipesAction = async (req: Request, res: Response): Promise<
 };
 
 /**
- * Get recipe page action
+ * Get recipes page action
  * @param {Request} req Request
  * @param {Response} res Response
  */
-export const getRecipePageAction = async (req: Request, res: Response): Promise<void> => {
+export const getRecipesPageAction = async (req: Request, res: Response): Promise<void> => {
   try {
     const { lastId, dishTypeId, limit } = req.query;
     const result = await getRecipesPage(Number(lastId), Number(dishTypeId), Number(limit));
+    const recipes: Recipe[] = RecipeMapper.mapToRecipes(result.rows);
+    res.status(StatusCodesEnum.OK).json(recipes);
+  } catch (err) {
+    res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
+  }
+};
+
+/**
+ * Get recipes page user action
+ * @param {Request} req Request
+ * @param {Response} res Response
+ */
+export const getRecipesPageUserAction = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { lastId, dishTypeId, limit, userId } = req.query;
+    const result = await getRecipesPageUser(Number(lastId), Number(dishTypeId), Number(limit), Number(userId));
     const recipes: Recipe[] = RecipeMapper.mapToRecipes(result.rows);
     res.status(StatusCodesEnum.OK).json(recipes);
   } catch (err) {

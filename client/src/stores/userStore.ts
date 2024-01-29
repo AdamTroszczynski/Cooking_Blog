@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 import User from '@/models/User';
 import { cookies } from '@/utils/cookiesClient';
 import { RECIPY_TOKEN_COOKIE_NAME } from '@/const/commonConst';
+import { useRecipesStore } from '@/stores/recipesStore';
 
 export const useUserStore = defineStore('userStore', () => {
   const user: Ref<User | null> = ref(null);
@@ -33,10 +34,12 @@ export const useUserStore = defineStore('userStore', () => {
 
   /** Logout user, reset all user data */
   const logout = (): void => {
+    const recipesStore = useRecipesStore();
     user.value = null;
     token.value = '';
     cookies.remove(RECIPY_TOKEN_COOKIE_NAME);
     isLogged.value = false;
+    recipesStore.userRecipes = [];
   };
 
   return {

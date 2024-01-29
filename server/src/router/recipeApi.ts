@@ -5,7 +5,8 @@ import {
   getDishCategoriesAction,
   getDifficultLevelsAction,
   getSingleRecipeAction,
-  getRecipePageAction,
+  getRecipesPageAction,
+  getRecipesPageUserAction,
   uploadRecipeImageAction,
   createRecipeAction,
 } from '@/controller/recipeController';
@@ -15,7 +16,9 @@ const recipeApi = express.Router();
 
 recipeApi.get('/recipes', getAllRecipesAction);
 
-recipeApi.get('/recipesPage', getRecipePageAction);
+recipeApi.get('/recipesPage', getRecipesPageAction);
+
+recipeApi.get('/recipesPageUser', verifyToken, getRecipesPageUserAction);
 
 recipeApi.get('/newestRecipes', getNewestRecipesAction);
 
