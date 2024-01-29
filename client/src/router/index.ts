@@ -4,10 +4,13 @@ import { useRecipesStore } from '@/stores/recipesStore';
 import { cookies } from '@/utils/cookiesClient';
 import { getUserFromToken } from '@/services/userServices';
 import { RECIPY_TOKEN_COOKIE_NAME } from '@/const/commonConst';
+
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import CreateRecipeView from '@/views/CreateRecipeView.vue';
+import ExploreView from '@/views/ExploreView.vue';
+import MyRecipesView from '@/views/MyRecipesView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +37,18 @@ const router = createRouter({
       path: '/create-recipe',
       name: 'crateRecipe',
       component: CreateRecipeView,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/explore',
+      name: 'explore',
+      component: ExploreView,
+      meta: { requiresAuth: false },
+    },
+    {
+      path: '/my-recipes',
+      name: 'myRecipes',
+      component: MyRecipesView,
       meta: { requiresAuth: true },
     },
     {

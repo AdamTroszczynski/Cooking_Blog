@@ -20,9 +20,9 @@
 
       <div>
         <div class="flex gap-x-[15px] justify-end mb-[18px] lg:justify-start 2xl:mb-[54px]">
-          <LinkButton :go-to="'https://github.com/Amanowsky/Cooking_Blog'" is-normal-link>Source</LinkButton>
-          <LinkButton :go-to="'#/contact'">Contact</LinkButton>
-          <LinkButton :go-to="'#/explore'">Explore</LinkButton>
+          <LinkButton go-to="https://github.com/Amanowsky/Cooking_Blog" is-normal-link>Source</LinkButton>
+          <LinkButton go-to="#/contact">Contact</LinkButton>
+          <LinkButton go-to="explore">Explore</LinkButton>
         </div>
 
         <div
@@ -74,7 +74,7 @@
         <div class="mt-[50px] lg:mt-[101px]">
           <LinkButton
             class="text-[.9375rem] lg:text-[1.25rem]"
-            :go-to="'#/Explore'"
+            go-to="explore"
           >
             Explore for more ...
           </LinkButton>

@@ -23,6 +23,19 @@ export const getRecipesPage = async (lastId: number, dishTypeId: number, limit: 
 };
 
 /**
+ * Get recipes page
+ * @param {number} lastId last recipe id
+ * @param {number} dishTypeId dish category id
+ * @param {number} limit limit of recipes
+ * @param {number} userId User id
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const getRecipesPageUser = async (lastId: number, dishTypeId: number, limit: number, userId: number): Promise<QueryResult> => {
+  const sql = 'SELECT recipeid, recipename, created, dl.levelname, dt.dishtypename, userid, steps, ingredients, recipeimage, likescount FROM recipes INNER JOIN difficultlevels dl ON recipes.difficultlevelid = dl.difficultlevelid INNER JOIN dishTypes dt ON recipes.dishtypeid = dt.dishtypeid WHERE recipeid > $1 AND dt.dishtypeid = $2 AND userid = $3 ORDER BY recipeid LIMIT $4';
+  return await query(sql, [lastId, dishTypeId, userId, limit]);
+};
+
+/**
  * Get newest recipes from specific dish type category
  * @param {number} dishTypeId Dish type id
  * @returns {Promise<QueryResult>} Query result

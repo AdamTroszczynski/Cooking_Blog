@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { type AxiosResponse } from 'axios';
 import { RECIPE_API_URL } from '@/const/commonConst';
 import type { DifficultLevel, DishCategory } from '@/types/commonTypes';
 import Recipe from '@/models/Recipe';
@@ -77,10 +77,21 @@ export const getSingleRecipe = async (recipeId: number): Promise<Recipe> => {
  * @param {number} lastId Last recipe id
  * @param {number} dishTypeId Recipe category id
  * @param {number} limit Limit of recipes per page
+ * @param {boolean} isUser If true, fetch users recipe pages
+ * @param {number} userId User id
+ * @param {string} token User auth token
  * @returns {Promise<Recipe[]>} Recipes page
  */
-export const getRecipesPage = async (lastId: number, dishTypeId: number, limit: number = 10): Promise<Recipe[]> => {
-  const response = await axios.get(`${RECIPE_API_URL}/recipesPage?lastId=${lastId}&dishTypeId=${dishTypeId}&limit=${limit}`);
+export const getRecipesPage = async (lastId: number, dishTypeId: number, limit: number = 10, isUser: boolean = false, userId: number = -1, token: string = ''): Promise<Recipe[]> => {
+  let response: AxiosResponse;
+
+  if (!isUser) {
+    response = await axios.get(`${RECIPE_API_URL}/recipesPage?lastId=${lastId}&dishTypeId=${dishTypeId}&limit=${limit}`);
+  } else {
+    response = await axios.get(`${RECIPE_API_URL}/recipesPageUser?lastId=${lastId}&dishTypeId=${dishTypeId}&limit=${limit}&userId=${userId}`,
+      {headers: { 'Content-Type': 'multipart/form-data', 'x-access-token': token }});
+  }
+
   const data = response.data;
   return RecipeMapper.mapToRecipes(data);
 };

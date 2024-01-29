@@ -1,15 +1,27 @@
 <template>
-  <div class="flex flex-col gap-y-[9px] items-center 2xl:gap-y-[12px]">
+  <div
+    class="flex flex-col gap-y-[9px] items-center"
+    :class="staySmall ? '' : '2xl:gap-y-[12px]'"
+  >
     <div
-      class="flex justify-center items-center w-[78px] h-[78px] border-solid border-[1px] border-black rounded-[9px]
-        2xl:w-[123px] 2xl:h-[123px] 2xl:rounded-[15px]"
-      :class="isSelected ? 'bg-black' : 'bg-white'"
+      class="flex justify-center items-center w-[78px] h-[78px] border-solid border-[1px] border-black rounded-[9px]"
+      :class="[
+        isSelected ? 'bg-black' : 'bg-white',
+        staySmall ? '' : '2xl:w-[123px] 2xl:h-[123px] 2xl:rounded-[15px]'
+      ]"
       @click="emitOnSelect()"
     >
-      <component :is="getIcon" class="w-[55%] h-auto" v-bind="{ pathClass: isSelected ? 'fill-white' : 'fill-black' }" />
+      <component
+        :is="getIcon"
+        class="w-[55%] h-auto"
+        v-bind="{ pathClass: isSelected ? 'fill-white' : 'fill-black' }"
+      />
     </div>
 
-    <p class="text-[.75rem] font-playfair text-black 2xl:text-[.9375rem]">
+    <p
+      class="text-[.75rem] font-playfair text-black"
+      :class="staySmall ? '' : '2xl:text-[.9375rem]'"
+    >
       <slot></slot>
     </p>
   </div>
@@ -36,7 +48,11 @@ const prop = defineProps({
     validator(value: string): boolean {
       return ['breakfast', 'dessert', 'drinks', 'fastfood', 'lunch', 'pizza'].includes(value);
     },
-  }
+  },
+  staySmall: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits<{
