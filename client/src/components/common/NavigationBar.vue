@@ -27,7 +27,7 @@
 
       <div class="flex items-end flex-col gap-y-[25px] mb-[37px] lg:flex-row lg:items-center lg:gap-x-[18px] lg:mb-0 lg:mr-[18px]">
         <template v-if="userStore.isUserLoggedIn">
-          <LinkButton go-to="#/my-recipes">My Recipes</LinkButton>
+          <LinkButton go-to="my-recipes">My Recipes</LinkButton>
           <LinkButton go-to="create-recipe">Create recipe</LinkButton>
         </template>
         <template v-else>
@@ -84,7 +84,9 @@ const toggleMenu = (): void => {
 };
 
 /** Redirect to explore view */
-const goToExplorePage = (): void => console.log('Go to explore page');
+const goToExplorePage = (): void => {
+  router.push({ name: 'explore' });
+};
 
 /** Handle logout action */
 const handleLogout = (): void => {

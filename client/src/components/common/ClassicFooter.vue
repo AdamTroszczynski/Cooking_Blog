@@ -22,26 +22,26 @@
           Cook, Share, Enjoy - Your Culinary Journey with Recipy Begins Here! 🍽️✨
         </p>
 
-        <ActionButton>Start Cooking</ActionButton>
+        <ActionButton @click-action="router.push({ name: 'explore' })">Start Cooking</ActionButton>
       </section>
 
       <section class="flex flex-col gap-y-[20px] mb-[65px]">
         <div class="flex gap-[18px]">
-          <LinkButton :go-to="'https://github.com/Amanowsky/Cooking_Blog'" is-normal-link>Source</LinkButton>
-          <LinkButton :go-to="'#/contact'">Contact</LinkButton>
-          <LinkButton :go-to="'#/explore'">Explore</LinkButton>
+          <LinkButton go-to="https://github.com/Amanowsky/Cooking_Blog" is-normal-link>Source</LinkButton>
+          <LinkButton go-to="#/contact">Contact</LinkButton>
+          <LinkButton go-to="explore">Explore</LinkButton>
         </div>
 
         <div class="flex gap-[20px]">
-          <LinkButton :go-to="'#/youtube'">
+          <LinkButton go-to="#/youtube">
             <YoutubeIcon />
           </LinkButton>
 
-          <LinkButton :go-to="'#/instagram'">
+          <LinkButton go-to="#/instagram">
             <InstagramIcon />
           </LinkButton>
 
-          <LinkButton :go-to="'#/facebook'">
+          <LinkButton go-to="#/facebook">
             <FacebookIcon />
           </LinkButton>
         </div>
@@ -62,10 +62,14 @@
 </template>
 
 <script setup lang="ts">
-import ActionButton from "@/components/buttons/ActionButton.vue";
-import LinkButton from "@/components/buttons/LinkButton.vue";
+import { useRouter } from 'vue-router';
+
+import ActionButton from '@/components/buttons/ActionButton.vue';
+import LinkButton from '@/components/buttons/LinkButton.vue';
 import YoutubeIcon from '@/components/icons/socialMedia/YoutubeIcon.vue';
 import InstagramIcon from '@/components/icons/socialMedia/InstagramIcon.vue';
 import FacebookIcon from '@/components/icons/socialMedia/FacebookIcon.vue';
 import SushiIllustration from '@/components/decorations/SushiIllustration.vue';
+
+const router = useRouter();
 </script>

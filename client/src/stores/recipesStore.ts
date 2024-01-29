@@ -9,6 +9,8 @@ export const useRecipesStore = defineStore('recipesStore', () => {
   const newestRecipes: Ref<Recipe[]> = ref([]);
   const dishCategories: Ref<DishCategory[]> = ref([]);
   const difficultLevels: Ref<DifficultLevel[]> = ref([]);
+  const exploreRecipes: Ref<Recipe[]> = ref([]);
+  const userRecipes: Ref<Recipe[]> = ref([]);
 
   /**
    * Get full name of dish category
@@ -61,6 +63,8 @@ export const useRecipesStore = defineStore('recipesStore', () => {
     newestRecipes,
     dishCategories,
     difficultLevels,
+    exploreRecipes,
+    userRecipes,
     getSelectedCategoryFullName,
     getSelectedDishCategoryId,
     setDishCategory,
