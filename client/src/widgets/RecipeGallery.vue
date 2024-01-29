@@ -37,18 +37,27 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  userRecipes: {
+    type: Boolean,
+    default: false,
+  },
 });
-
-/** Source for recipes in infinity scroll widget mode */
-const infinityScrollRecipes: Ref<Recipe[]> = ref([]);
 
 /** Value of scroll Y */
 const scrollY: Ref<number> = ref(window.scrollY);
 
-watch(scrollY, async (newValue: number): Promise<void> => {
-  if (newValue + window.innerHeight >= document.documentElement.scrollHeight) {
-    await loadRecipesPage();
-  }
+/** I loading again status */
+const isLoadedAgain: Ref<boolean> = ref(false);
+
+/** No more recipes status */
+const isNoMoreRecipes: Ref<boolean> = ref(false);
+
+/**
+ * Get explore or user recipes based on `userRecipes` prop value
+ * @returns {Recipe[]} Array of recipes
+ */
+const exploreUserRecipes = computed<Recipe[]>(() => {
+  return !props.userRecipes ? recipesStore.exploreRecipes : recipesStore.userRecipes;
 });
 
 /**
@@ -63,7 +72,7 @@ const recipesSource = computed<Recipe[]>(() => {
   } else if (!props.infinityScroll) {
     source = recipesStore.newestRecipes;
   } else {
-    source = infinityScrollRecipes.value;
+    source = exploreUserRecipes.value;
   }
 
   // Filter by selected category
@@ -89,6 +98,32 @@ const lastRecipeIdFromCategory = computed<number>(() => {
   return recipesSource.value[recipesSource.value.length - 1].recipeId;
 });
 
+watch(
+  () => recipesStore.selectedDishCategory,
+  () => {
+    isLoadedAgain.value = false;
+    isNoMoreRecipes.value = false;
+  }
+);
+
+watch(scrollY, async (newValue: number): Promise<void> => {
+  if (!isNoMoreRecipes.value && (newValue + window.innerHeight >= document.documentElement.scrollHeight - 300)) {
+    const lengthBefore = exploreUserRecipes.value.length;
+    await loadRecipesPage();
+    const lengthAfter = exploreUserRecipes.value.length;
+    if (lengthBefore === lengthAfter) {
+      isNoMoreRecipes.value = true;
+    }
+  }
+});
+
+watch(recipesSource, async (newValue: Recipe[]): Promise<void> => {
+  if (newValue.length === 0 && !isLoadedAgain.value) {
+    isLoadedAgain.value = true;
+    await loadRecipesPage();
+  }
+});
+
 /**
  * Open recipe details page after click the recipe card
  * @param {number} recipeId Recipe id
@@ -100,7 +135,11 @@ const openRecipeDetails = (recipeId: number): void => {
 /** Load another recipes page */
 const loadRecipesPage = async (): Promise<void> => {
   const recipesPage = await getRecipesPage(lastRecipeIdFromCategory.value, recipesStore.getSelectedDishCategoryId);
-  infinityScrollRecipes.value = infinityScrollRecipes.value.concat(recipesPage);
+  if (!props.userRecipes) {
+    recipesStore.exploreRecipes = recipesStore.exploreRecipes.concat(recipesPage);
+  } else {
+    recipesStore.userRecipes = recipesStore.userRecipes.concat(recipesPage);
+  }
 };
 
 /** Logic to do when mount */
