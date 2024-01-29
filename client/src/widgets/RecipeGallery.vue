@@ -107,6 +107,7 @@ watch(
 );
 
 watch(scrollY, async (newValue: number): Promise<void> => {
+  if (!props.infinityScroll) return;
   if (!isNoMoreRecipes.value && (newValue + window.innerHeight >= document.documentElement.scrollHeight - 300)) {
     const lengthBefore = exploreUserRecipes.value.length;
     await loadRecipesPage();
@@ -118,6 +119,7 @@ watch(scrollY, async (newValue: number): Promise<void> => {
 });
 
 watch(recipesSource, async (newValue: Recipe[]): Promise<void> => {
+  if (!props.infinityScroll) return;
   if (newValue.length === 0 && !isLoadedAgain.value) {
     isLoadedAgain.value = true;
     await loadRecipesPage();
