@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { onMounted, computed, ref, type Ref, watch } from 'vue';
 import Recipe from '@/models/Recipe';
+import { useRouter } from 'vue-router';
 import { getNewestRecipes, getRecipesPage } from '@/services/recipesServices';
 import { useRecipesStore } from '@/stores/recipesStore';
 import { useUserStore } from '@/stores/userStore';
@@ -25,6 +26,7 @@ import RecipeCard from '@/components/cards/RecipeCard.vue';
 
 const recipesStore = useRecipesStore();
 const userStore = useUserStore();
+const router = useRouter();
 
 const props = defineProps({
   ownData: {
@@ -48,6 +50,8 @@ const props = defineProps({
     default: '',
   },
 });
+
+const RECIPES_LIMIT = 10;
 
 /** Value of scroll Y */
 const scrollY: Ref<number> = ref(window.scrollY);
@@ -145,12 +149,12 @@ watch(recipesSource, async (newValue: Recipe[]): Promise<void> => {
  * @param {number} recipeId Recipe id
  */
 const openRecipeDetails = (recipeId: number): void => {
-  console.log(`Clicked card with id: ${recipeId}`);
+  router.push({ name: 'recipeDetails', params: { recipeId } });
 };
 
 /** Load another recipes page */
 const loadRecipesPage = async (): Promise<void> => {
-  const recipesPage = await getRecipesPage(lastRecipeIdFromCategory.value, recipesStore.getSelectedDishCategoryId, 10, props.userRecipes, userStore.user?.userId, userStore.token);
+  const recipesPage = await getRecipesPage(lastRecipeIdFromCategory.value, recipesStore.getSelectedDishCategoryId, RECIPES_LIMIT, props.userRecipes, userStore.user?.userId, userStore.token);
   if (!props.userRecipes) {
     recipesStore.exploreRecipes = recipesStore.exploreRecipes.concat(recipesPage);
   } else {

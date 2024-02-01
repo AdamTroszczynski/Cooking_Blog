@@ -2,7 +2,7 @@ import { ref, type Ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 import type { DishCategory, DifficultLevel } from '@/types/commonTypes';
 import Recipe from '@/models/Recipe';
-import { getDishCategories, getDifficultLevels } from '@/services/recipesServices';
+import { getDishCategories, getDifficultLevels, getSingleRecipe } from '@/services/recipesServices';
 
 export const useRecipesStore = defineStore('recipesStore', () => {
   const selectedDishCategory: Ref<string> = ref('breakfast');
@@ -11,6 +11,7 @@ export const useRecipesStore = defineStore('recipesStore', () => {
   const difficultLevels: Ref<DifficultLevel[]> = ref([]);
   const exploreRecipes: Ref<Recipe[]> = ref([]);
   const userRecipes: Ref<Recipe[]> = ref([]);
+  const singleRecipe: Ref<Recipe|null> = ref(null);
 
   /**
    * Get full name of dish category
@@ -58,6 +59,15 @@ export const useRecipesStore = defineStore('recipesStore', () => {
     difficultLevels.value = result;
   };
 
+  /**
+   * Load single recipe with id: `recipeId`
+   * @param {number} recipeId Recipe id
+   */
+  const loadSingleRecipe = async (recipeId: number): Promise<void> => {
+    const recipe = await getSingleRecipe(recipeId);
+    singleRecipe.value = recipe;
+  };
+
   return {
     selectedDishCategory,
     newestRecipes,
@@ -65,11 +75,13 @@ export const useRecipesStore = defineStore('recipesStore', () => {
     difficultLevels,
     exploreRecipes,
     userRecipes,
+    singleRecipe,
     getSelectedCategoryFullName,
     getSelectedDishCategoryId,
     setDishCategory,
     setNewestRecipes,
     loadDishCategories,
     loadDifficultLevels,
+    loadSingleRecipe,
   };
 });

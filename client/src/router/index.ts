@@ -11,6 +11,7 @@ import RegisterView from '@/views/RegisterView.vue';
 import CreateRecipeView from '@/views/CreateRecipeView.vue';
 import ExploreView from '@/views/ExploreView.vue';
 import MyRecipesView from '@/views/MyRecipesView.vue';
+import RecipeDetailsView from '@/views/RecipeDetailsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,24 @@ const router = createRouter({
       name: 'myRecipes',
       component: MyRecipesView,
       meta: { requiresAuth: true },
+    },
+    {
+      path: '/recipe-details/:recipeId',
+      name: 'recipeDetails',
+      component: RecipeDetailsView,
+      meta: { requiresAuth: false },
+      beforeEnter: async (to, from, next) => {
+        try {
+          const recipesStore = useRecipesStore();
+          const recipeId = to.params.recipeId;
+          if (!recipeId) return next('home');
+          await recipesStore.loadSingleRecipe(Number(recipeId));
+          if (recipesStore.singleRecipe === null) return next('home');
+          next();
+        } catch (err) {
+          next('home');
+        }
+      },
     },
     {
       path: '/:pathMatch(.*)*',
