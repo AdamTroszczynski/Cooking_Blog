@@ -29,7 +29,7 @@
         <div class="flex gap-[18px]">
           <LinkButton go-to="https://github.com/Amanowsky/Cooking_Blog" is-normal-link>Source</LinkButton>
           <LinkButton go-to="#/contact">Contact</LinkButton>
-          <LinkButton go-to="explore">Explore</LinkButton>
+          <LinkButton go-to="/explore">Explore</LinkButton>
         </div>
 
         <div class="flex gap-[20px]">
