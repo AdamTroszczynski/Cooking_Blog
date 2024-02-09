@@ -27,12 +27,12 @@
 
       <div class="flex items-end flex-col gap-y-[25px] mb-[37px] lg:flex-row lg:items-center lg:gap-x-[18px] lg:mb-0 lg:mr-[18px]">
         <template v-if="userStore.isUserLoggedIn">
-          <LinkButton go-to="my-recipes">My Recipes</LinkButton>
-          <LinkButton go-to="create-recipe">Create recipe</LinkButton>
+          <LinkButton go-to="/my-recipes">My Recipes</LinkButton>
+          <LinkButton go-to="/create-recipe">Create recipe</LinkButton>
         </template>
         <template v-else>
-          <LinkButton go-to="login">Login</LinkButton>
-          <LinkButton go-to="register">Create Account</LinkButton>
+          <LinkButton go-to="/login">Login</LinkButton>
+          <LinkButton go-to="/register">Create Account</LinkButton>
         </template>
       </div>
 
