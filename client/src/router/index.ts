@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router';
 import { useUserStore } from '@/stores/userStore';
 import { useRecipesStore } from '@/stores/recipesStore';
 import { cookies } from '@/utils/cookiesClient';
@@ -8,10 +8,23 @@ import { RECIPY_TOKEN_COOKIE_NAME } from '@/const/commonConst';
 import HomeView from '@/views/HomeView.vue';
 import LoginView from '@/views/LoginView.vue';
 import RegisterView from '@/views/RegisterView.vue';
-import CreateRecipeView from '@/views/CreateRecipeView.vue';
+import CreateEditRecipeView from '@/views/CreateEditRecipeView.vue';
 import ExploreView from '@/views/ExploreView.vue';
 import MyRecipesView from '@/views/MyRecipesView.vue';
 import RecipeDetailsView from '@/views/RecipeDetailsView.vue';
+
+/** Load recipe with id from param (`next() is required after calling this function`) */
+const loadRecipeWithParamId = async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext): Promise<void> => {
+  try {
+    const recipesStore = useRecipesStore();
+    const recipeId = to.params.recipeId;
+    if (!recipeId) return next('home');
+    await recipesStore.loadSingleRecipe(Number(recipeId));
+    if (recipesStore.singleRecipe === null) return next('home');
+  } catch (err) {
+    next('home');
+  }
+};
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,8 +50,24 @@ const router = createRouter({
     {
       path: '/create-recipe',
       name: 'crateRecipe',
-      component: CreateRecipeView,
+      component: CreateEditRecipeView,
       meta: { requiresAuth: true },
+    },
+    {
+      path: '/edit-recipe/:recipeId',
+      name: 'editRecipe',
+      component: CreateEditRecipeView,
+      meta: { requiresAuth: true, edit: true },
+      beforeEnter: async (to, from, next) => {
+        await loadRecipeWithParamId(to, from , next);
+        const recipesStore = useRecipesStore();
+        const userStore = useUserStore();
+        if (recipesStore.singleRecipe?.userId === userStore.user?.userId) {
+          next();
+        } else {
+          next('home');
+        }
+      },
     },
     {
       path: '/explore',
@@ -57,17 +86,9 @@ const router = createRouter({
       name: 'recipeDetails',
       component: RecipeDetailsView,
       meta: { requiresAuth: false },
-      beforeEnter: async (to, from, next) => {
-        try {
-          const recipesStore = useRecipesStore();
-          const recipeId = to.params.recipeId;
-          if (!recipeId) return next('home');
-          await recipesStore.loadSingleRecipe(Number(recipeId));
-          if (recipesStore.singleRecipe === null) return next('home');
-          next();
-        } catch (err) {
-          next('home');
-        }
+      beforeEnter: async (from, to, next) => {
+        await loadRecipeWithParamId(from, to, next);
+        next();
       },
     },
     {

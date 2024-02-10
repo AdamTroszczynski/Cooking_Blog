@@ -34,14 +34,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, computed } from 'vue';
+import { ref, type Ref, computed, watch } from 'vue';
 
 import DownArrowIcon from '@/components/icons/common/DownArrowIcon.vue';
 
 const props = defineProps({
   data: {
     type: Array<String>,
-    default: [],
+    default: () => [],
   },
   name: {
     type: String,
@@ -55,12 +55,20 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  modelValue: {
+    type: String,
+    default: '',
+  },
 });
 
 const emit = defineEmits<{
   /** Emit event after select new option */
-  (e: 'input', option: string): void;
+  (e: 'update:modelValue', option: string): void;
 }>();
+
+watch(() => props.modelValue, (newValue: string) => {
+  selectedOption.value = newValue;
+});
 
 /** Input selected option */
 const selectedOption: Ref<string> = ref('');
@@ -81,7 +89,6 @@ const selected = computed<string>(() => selectedOption.value === '' ? props.plac
 const selectOption = (newOption: string): void => {
   selectedOption.value = newOption;
   open.value = false;
-  emit('input', newOption);
-
+  emit('update:modelValue', newOption);
 };
 </script>
