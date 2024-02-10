@@ -99,7 +99,7 @@ import { useForm } from 'vee-validate';
 import Recipe from '@/models/Recipe';
 import Ingredient from '@/models/Ingredient';
 import Step from '@/models/Step';
-import { saveRecipe, uploadRecipeImage } from '@/services/recipesServices';
+import { saveRecipe, uploadRecipeImage, updateRecipe } from '@/services/recipesServices';
 import { useRecipesStore } from '@/stores/recipesStore';
 import { useUserStore } from '@/stores/userStore';
 import { getNewRecipe } from '@/utils/recipeHelpers';
@@ -179,6 +179,7 @@ const isEdit = computed<boolean>(() => route.meta.edit ? true : false);
 /** Create/Save new recipe */
 const save = async (): Promise<void> => {
   const preparedRecipeToSave = {
+    recipeId: recipe.value.recipeId,
     recipeName: recipe.value.recipeName,
     userId: userStore.user?.userId,
     recipeIngredients: recipe.value.ingredients,
@@ -188,8 +189,16 @@ const save = async (): Promise<void> => {
     recipeImage: recipe.value.recipeImage,
   };
 
-  await saveRecipe(preparedRecipeToSave, userStore.token);
-  await uploadRecipeImage(imageToUpload.value, userStore.user!.userId, userStore.token);
+  if (!isEdit.value) {
+    await saveRecipe(preparedRecipeToSave, userStore.token);
+  } else {
+    await updateRecipe(preparedRecipeToSave, userStore.token);
+  }
+
+  if (imageToUpload.value !== null) {
+    await uploadRecipeImage(imageToUpload.value, userStore.user!.userId, userStore.token);
+  }
+
   router.push({ name: 'home' });
 };
 

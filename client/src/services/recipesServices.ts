@@ -40,9 +40,25 @@ export const getNewestRecipes = async (): Promise<Recipe[]> => {
  * Save new recipe into database
  * @param {Object} recipeToSave New recipe to save
  * @param {string} token Token
+ * @returns {Promise<Recipe>} saved recipe
  */
 export const saveRecipe = async (recipeToSave: any, token: string): Promise<Recipe> => {
   const response = await axios.post(`${RECIPE_API_URL}/createRecipe`, { recipe: recipeToSave }, {
+    headers: { 'x-access-token': token },
+  });
+
+  const data = response.data;
+  return RecipeMapper.mapObjectToRecipe(data);
+};
+
+/**
+ * Update recipe
+ * @param {Object} recipeToUpdate Recipe to update
+ * @param {string} token Token
+ * @returns {Promise<Recipe>} updated recipe
+ */
+export const updateRecipe = async (recipeToUpdate: any, token: string): Promise<Recipe> => {
+  const response = await axios.put(`${RECIPE_API_URL}/updateRecipe`, { recipe: recipeToUpdate }, {
     headers: { 'x-access-token': token },
   });
 

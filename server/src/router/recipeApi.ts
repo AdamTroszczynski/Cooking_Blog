@@ -9,6 +9,7 @@ import {
   getRecipesPageUserAction,
   uploadRecipeImageAction,
   createRecipeAction,
+  updateRecipeAction,
 } from '@/controller/recipeController';
 import { verifyToken } from '@/middleware/auth';
 
@@ -31,5 +32,7 @@ recipeApi.get('/difficultLevels', getDifficultLevelsAction);
 recipeApi.post('/uploadRecipeImage', verifyToken, uploadRecipeImageAction);
 
 recipeApi.post('/createRecipe', verifyToken, createRecipeAction);
+
+recipeApi.put('/updateRecipe', verifyToken, updateRecipeAction);
 
 export default recipeApi;

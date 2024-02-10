@@ -14,6 +14,7 @@ import {
   getSingleRecipeById,
   getRecipesPage,
   getRecipesPageUser,
+  updateRecipe,
 } from '@/services/recipeService';
 import type { DishCategory, DifficultLevel } from '@/types/commonTypes';
 import RequestError from '@/models/errors/RequestError';
@@ -134,6 +135,24 @@ export const getDifficultLevelsAction = async (req: Request, res: Response): Pro
 };
 
 /**
+ * Convert ingredients and steps to strings
+ * @param {any} ingredientsToConvert ingredients to convert
+ * @param {any} stepsToConvert steps to convert
+ * @returns {string} Converted string from ingredients and steps
+ */
+const convertRecipeElements = (ingredientsToConvert: any, stepsToConvert: any): { convertedIngredients: string, convertedSteps: string } => {
+  const convertedIngredients: string = ingredientsToConvert
+      .map((ingredient: Ingredient) => `${ingredient.name}/${ingredient.qua}`)
+      .join('|');
+
+  const convertedSteps: string = stepsToConvert
+    .map((step: Step) => `${step.stepContent}`)
+    .join('|');
+
+  return { convertedIngredients, convertedSteps };
+};
+
+/**
  * Create new recipe action action
  * @param {Request} req Request
  * @param {Response} res Response
@@ -153,13 +172,7 @@ export const createRecipeAction = async (req: Request, res: Response): Promise<v
     const newRecipeId = (await getLastRecipeId()).rows[0].max + 1;
 
     // Convert steps and ingredients to strings
-    const convertedIngredients: string = recipeIngredients
-      .map((ingredient: Ingredient) => `${ingredient.name}/${ingredient.qua}`)
-      .join('|');
-
-    const convertedSteps: string = recipeSteps
-      .map((step: Step) => `${step.stepContent}`)
-      .join('|');
+    const { convertedIngredients, convertedSteps } = convertRecipeElements(recipeIngredients, recipeSteps);
 
     await createRecipe(newRecipeId, recipeName, difficultLevel, dishType, userId, convertedSteps, convertedIngredients, recipeImage);
     const createdRecipe = (await getSingleRecipeById(newRecipeId)).rows[0];
@@ -195,4 +208,32 @@ export const uploadRecipeImageAction = (req: Request, res: Response) => {
   image.mv(__dirname + '/../public/recipeImages/' + userId + '/' + image.name.split(' ').join(''));
 
   res.status(StatusCodesEnum.OK).json({ msg: 'Image uploaded successfully'});
+};
+
+/**
+ * Update recipe action
+ * @param {Request} req Request
+ * @param {Response} res Response
+ */
+export const updateRecipeAction = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { recipeId, recipeName, userId, recipeIngredients, recipeSteps, difficultLevel, dishType, recipeImage } = req.body.recipe;
+
+    if (!(recipeId && recipeName && userId && recipeIngredients && recipeSteps && difficultLevel && dishType && recipeImage)) {
+      res.status(StatusCodesEnum.BadRequest).json(
+        new RequestError(ErrorMessagesEnum.ValidationError, 'All inputs are required !')
+      );
+
+      return;
+    }
+
+    // Convert steps and ingredients to strings
+    const { convertedIngredients, convertedSteps } = convertRecipeElements(recipeIngredients, recipeSteps);
+
+    await updateRecipe(recipeId, recipeName, difficultLevel, dishType, convertedSteps, convertedIngredients, recipeImage);
+    const updatedRecipe = (await getSingleRecipeById(recipeId)).rows[0];
+    res.status(StatusCodesEnum.OK).json(RecipeMapper.mapObjectToRecipe(updatedRecipe));
+  } catch (err) {
+    res.status(StatusCodesEnum.ServerError).json(new RequestError(ErrorMessagesEnum.ServerError, err));
+  }
 };
