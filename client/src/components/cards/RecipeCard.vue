@@ -7,7 +7,7 @@
     <div
       class="h-[200px] mb-[15px] border-solid border-[1px] border-black rounded-[15px] bg-center bg-cover bg-no-repeat
         3xl:h-[214px] 3xl:mb-[16px]"
-      :style="{ 'background-image': `url(${STATIC_IMAGES_URL}/${image})` }"
+      :style="{ 'background-image': `url(${imageUrl})` }"
     ></div>
 
     <div class="flex justify-between items-center gap-x-[20px] font-playfair text-black text-[.9375rem]">
@@ -25,12 +25,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { STATIC_IMAGES_URL } from '@/const/commonConst';
+import testRecipeImage from '@/assets/images/TestRecipeImage.jpg';
 
 import StarIcon from '@/components/icons/common/StarIcon.vue';
 import HeartIcon from '@/components/icons/common/HeartIcon.vue';
 
-defineProps({
+const props = defineProps({
   image: {
     type: String,
     default: '',
@@ -49,6 +51,12 @@ const emit = defineEmits<{
   /** Emit event after click recipe card */
   (e: 'onCardClick'): void;
 }>();
+
+/**
+ * Return image url based on prop value
+ * @returns {string} recipe image url
+ */
+const imageUrl = computed<string>(() => props.image === 'test' ? testRecipeImage : `${STATIC_IMAGES_URL}/${props.image}`);
 
 /** Emit event when user click recipe card */
 const emitClickedCard = (): void => emit('onCardClick');
