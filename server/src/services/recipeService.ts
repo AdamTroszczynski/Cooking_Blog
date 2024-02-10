@@ -98,3 +98,19 @@ export const getSingleRecipeById = async (recipeId: number): Promise<QueryResult
   const sql = 'SELECT recipeid, recipename, created, dl.levelname, dt.dishtypename, userid, steps, ingredients, recipeimage, likescount FROM recipes INNER JOIN difficultlevels dl ON recipes.difficultlevelid = dl.difficultlevelid INNER JOIN dishTypes dt ON recipes.dishtypeid = dt.dishtypeid WHERE recipeid = $1';
   return await query(sql, [recipeId]);
 };
+
+/**
+ * Update recipe in database
+ * @param {number} recipeId Recipe id
+ * @param {string} recipeName Name of recipe
+ * @param {number} difficultLevelId Difficult level
+ * @param {number} dishTypeId Dish type
+ * @param {string} steps Steps
+ * @param {string} ingredients Ingredients
+ * @param {string} recipeImage Recipe image
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const updateRecipe = async (recipeId: number, recipeName: string, difficultLevelId: number, dishTypeId: number, steps: string, ingredients: string, recipeImage: string): Promise<QueryResult> => {
+  const sql = 'UPDATE recipes SET recipename = $2, difficultlevelid = $3, dishtypeid = $4, steps = $5, ingredients = $6, recipeimage = $7 WHERE recipeid = $1';
+  return await query(sql, [recipeId, recipeName, difficultLevelId, dishTypeId, steps, ingredients, recipeImage]);
+};
