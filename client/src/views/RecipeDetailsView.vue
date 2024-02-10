@@ -84,6 +84,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useRecipesStore } from '@/stores/recipesStore';
 import { useUserStore } from '@/stores/userStore';
 import Recipe from '@/models/Recipe';
@@ -98,6 +99,7 @@ import HeartIcon from '@/components/icons/common/HeartIcon.vue';
 import IngredientsCard from '@/components/cards/IngredientsCard.vue';
 import StepCard from '@/components/cards/StepCard.vue';
 
+const router = useRouter();
 const recipesStore = useRecipesStore();
 const userStore = useUserStore();
 
@@ -115,7 +117,7 @@ const showExtraControls = computed<boolean>(() => userStore.isUserLoggedIn && us
 
 /** Edit current recipe */
 const editRecipe = (): void => {
-  console.log('Edit recipe');
+  router.push({ name: 'editRecipe', params: { recipeId: recipesStore.singleRecipe?.recipeId } });
 };
 
 /** Delete current recipe */

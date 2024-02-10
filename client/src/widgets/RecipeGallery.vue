@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, ref, type Ref, watch } from 'vue';
+import { onBeforeMount, computed, ref, type Ref, watch } from 'vue';
 import Recipe from '@/models/Recipe';
 import { useRouter } from 'vue-router';
 import { getNewestRecipes, getRecipesPage } from '@/services/recipesServices';
@@ -169,7 +169,7 @@ const mountLogic = (): void => {
   });
 };
 
-onMounted(async (): Promise<void> => {
+onBeforeMount(async (): Promise<void> => {
   mountLogic();
   if (props.ownData) return;
   if (props.infinityScroll) { await loadRecipesPage(); return; }

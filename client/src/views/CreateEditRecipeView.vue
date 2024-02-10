@@ -4,7 +4,7 @@
 
     <header class="flex flex-col items-center mt-[80px] lg:flex-row lg:justify-between 2xl:mt-[114px]">
       <h1 class="mb-[20px] text-black font-merri text-[1.875rem] font-bold lg:mb-0 2xl:text-[3.4375rem]">
-        Create Recipe
+        {{ isEdit ? 'Edit Recipe' : 'Create Recipe' }}
       </h1>
 
       <div class="flex gap-x-[12px]">
@@ -32,8 +32,8 @@
       <SectionWithInputs heading="Basic information">
         <template #sectionBody>
           <ClassicInput placeholder="Recipe Name" name="recipeName" no-icon />
-          <SelectInput name="difficulty" placeholder="Difficulty" :data="difficultLevelNames" @input="setDifficulty" />
-          <SelectInput name="dishtype" placeholder="Dish Type" :data="dishCategoryNames" @input="setDishtype" />
+          <SelectInput name="difficulty" placeholder="Difficulty" :data="difficultLevelNames" v-model="recipe.difficultLevel" />
+          <SelectInput name="dishtype" placeholder="Dish Type" :data="dishCategoryNames" v-model="recipe.dishType" />
         </template>
       </SectionWithInputs>
 
@@ -93,8 +93,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref, watch, computed } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, type Ref, watch, computed, onUpdated, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import { useForm } from 'vee-validate';
 import Recipe from '@/models/Recipe';
 import Ingredient from '@/models/Ingredient';
@@ -102,6 +102,7 @@ import Step from '@/models/Step';
 import { saveRecipe, uploadRecipeImage } from '@/services/recipesServices';
 import { useRecipesStore } from '@/stores/recipesStore';
 import { useUserStore } from '@/stores/userStore';
+import { getNewRecipe } from '@/utils/recipeHelpers';
 
 import NavigationBar from '@/components/common/NavigationBar.vue';
 import ClassicFooter from '@/components/common/ClassicFooter.vue';
@@ -117,12 +118,11 @@ import SelectInput from '@/components/inputs/SelectInput.vue';
 const recipeStore = useRecipesStore();
 const userStore = useUserStore();
 const router = useRouter();
-const { values } = useForm();
+const route = useRoute();
+const { values, setFieldValue } = useForm();
 
 /** New recipe object */
-const recipe: Ref<Recipe> = ref(new Recipe(0, '', 0, '', '', 0,
-[new Step(1, 'Step 1'), new Step(2, 'Step 2'), new Step(3, 'Step 3')],
-[new Ingredient(1, '', ''), new Ingredient(2, '', ''), new Ingredient(3, '', ''), new Ingredient(4, '', '')], '', 0));
+const recipe: Ref<Recipe> = ref(getNewRecipe());
 
 /** Current ingredient id */
 const ingredientCurrentId: Ref<number> = ref(5);
@@ -169,6 +169,12 @@ const dishCategoryNames = computed<string[]>(() => recipeStore.dishCategories.ma
  * @returns {DifficultLevel[]} array of
  */
 const difficultLevelNames = computed<string[]>(() => recipeStore.difficultLevels.map((difficultLevel) => difficultLevel.levelName));
+
+/**
+ * Return true if current view should be in edit mode
+ * @returns {boolean} true is edit mode enable
+ */
+const isEdit = computed<boolean>(() => route.meta.edit ? true : false);
 
 /** Create/Save new recipe */
 const save = async (): Promise<void> => {
@@ -226,25 +232,42 @@ const removeStep = (stepId: number): void => {
   }
 };
 
-/**
- * Set difficulty level for new recipe
- * @param {string} option new difficulty level value
- */
-const setDifficulty = (option: string): void => {
-  recipe.value.difficultLevel = option;
-};
-
-/**
- * Set dishtype for new recipe
- * @param {string} option new dishtype value
- */
-const setDishtype = (option: string): void => {
-  recipe.value.dishType = option;
-};
-
 /** Set recipe image */
 const setRecipeImage = async (e: any) => {
   recipe.value.recipeImage = userStore.user?.userId + '/' + (e.target.files[0].name as string).split(' ').join('');
   imageToUpload.value = e.target.files;
 };
+
+/** Update all inputs */
+const refreshInputs = (): void => {
+  setFieldValue('recipeName', recipe.value.recipeName);
+
+  recipe.value.ingredients.forEach((ingredient) => {
+    setFieldValue(`ingredient${ingredient.id}`, ingredient.name);
+    setFieldValue(`quantity${ingredient.id}`, ingredient.qua);
+  });
+
+  recipe.value.steps.forEach((step) => {
+    setFieldValue(`step${step.stepNumber}`, step.stepContent);
+  });
+};
+
+/** Load data to editor */
+const prepareRecipeToEdit = (): void => {
+  if (!isEdit.value) {
+    recipe.value = getNewRecipe();
+  } else {
+    recipe.value = recipeStore.singleRecipe as Recipe;
+  }
+
+  refreshInputs();
+};
+
+onMounted((): void => {
+  prepareRecipeToEdit();
+});
+
+onUpdated(async (): Promise<void> => {
+  prepareRecipeToEdit();
+});
 </script>
