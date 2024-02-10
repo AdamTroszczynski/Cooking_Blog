@@ -16,7 +16,7 @@
             <div
               class="relative w-full h-full bg-cover bg-center bg-no-repeat rounded-[12px] before:absolute before:top-0
                 before:left-0 before:w-full before:h-full before:bg-black/50 before:rounded-[12px]"
-              :style="{ 'background-image': `url(${STATIC_IMAGES_URL}/${recipe.recipeImage})` }"
+              :style="{ 'background-image': `url(${imageUrl})` }"
             ></div>
 
             <h1 class="absolute text-white font-merri font-bold text-[1.875rem] xl:text-[2.8125rem]">
@@ -88,6 +88,7 @@ import { useRecipesStore } from '@/stores/recipesStore';
 import { useUserStore } from '@/stores/userStore';
 import Recipe from '@/models/Recipe';
 import { STATIC_IMAGES_URL } from '@/const/commonConst';
+import testRecipeImage from '@/assets/images/TestRecipeImage.jpg';
 
 import ViewWrapper from '@/components/layout/ViewWrapper.vue';
 import NavigationBar from '@/components/common/NavigationBar.vue';
@@ -112,6 +113,12 @@ const recipe = computed<Recipe>(() => recipesStore.singleRecipe!);
  * @returns {boolean} true is recipe is created by logged user
  */
 const showExtraControls = computed<boolean>(() => userStore.isUserLoggedIn && userStore.user?.userId === recipe.value.userId);
+
+/**
+ * Return image url based on recipe image value
+ * @returns {string} recipe image url
+ */
+const imageUrl = computed<string>(() => recipe.value.recipeImage === 'test' ? testRecipeImage : `${STATIC_IMAGES_URL}/${recipe.value.recipeImage}`);
 
 /** Edit current recipe */
 const editRecipe = (): void => {
