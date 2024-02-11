@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, rmSync } from 'fs';
 import RecipeMapper from '@/mappers/RecipeMapper';
 import Recipe from '@/models/Recipe';
 import { StatusCodesEnum } from '@/enums/StatusCodesEnum';
@@ -189,7 +189,7 @@ export const createRecipeAction = async (req: Request, res: Response): Promise<v
  */
 export const uploadRecipeImageAction = (req: Request, res: Response) => {
   const image = req.files!['files[]'] as UploadedFile;
-  const { userId } = req.body;
+  const { userId, previousImage } = req.body;
 
   if (!image) {
     return res.status(StatusCodesEnum.BadRequest).json(new RequestError(ErrorMessagesEnum.ResourceError, null));
@@ -202,6 +202,11 @@ export const uploadRecipeImageAction = (req: Request, res: Response) => {
   // Check if user folder exists, if not create them
   if (!existsSync(__dirname + '/../public/recipeImages/' + userId)) {
     mkdirSync(__dirname + '/../public/recipeImages/' + userId);
+  }
+
+  // If exists, remove old image for recipe
+  if (previousImage !== '' && existsSync(__dirname + '/../public/recipeImages/' + previousImage)) {
+    rmSync(__dirname + '/../public/recipeImages/' + previousImage);
   }
 
   // Move new image to specific user folder
@@ -217,7 +222,7 @@ export const uploadRecipeImageAction = (req: Request, res: Response) => {
  */
 export const updateRecipeAction = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { recipeId, recipeName, userId, recipeIngredients, recipeSteps, difficultLevel, dishType, recipeImage } = req.body.recipe;
+    const { recipeId, recipeName, userId, recipeIngredients, recipeSteps, difficultLevel, dishType, recipeImage, previousImage } = req.body.recipe;
 
     if (!(recipeId && recipeName && userId && recipeIngredients && recipeSteps && difficultLevel && dishType && recipeImage)) {
       res.status(StatusCodesEnum.BadRequest).json(
