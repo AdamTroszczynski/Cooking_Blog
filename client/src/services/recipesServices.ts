@@ -72,8 +72,8 @@ export const updateRecipe = async (recipeToUpdate: any, token: string): Promise<
  * @param {number} userId User id that image is from
  * @param {string} token Token
  */
-export const uploadRecipeImage = async (files: any, userId: number, token: string): Promise<void> => {
-  await axios.post(`${RECIPE_API_URL}/uploadRecipeImage`, {files, userId},
+export const uploadRecipeImage = async (files: any, userId: number, token: string, previousImage: string): Promise<void> => {
+  await axios.post(`${RECIPE_API_URL}/uploadRecipeImage`, {files, userId, previousImage},
     {headers: { 'Content-Type': 'multipart/form-data', 'x-access-token': token }});
 };
 

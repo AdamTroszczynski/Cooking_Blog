@@ -15,9 +15,13 @@
 
     <main class="grid grid-cols-1 gap-[15px] mt-[50px] mb-[171px] md:grid-cols-2 lg:grid-cols-3 2xl:mt-[35px] 2xl:gap-[20px] 3xl:mb-[663px]">
       <section class="h-[350px] p-[5px] border-solid border-[1px] border-black rounded-[15px] lg:col-span-2 3xl:h-[453px]">
-        <label class="block w-full h-full py-[57px] px-[45px] bg-blue/10 rounded-[12px] 2xl:flex 2xl:justify-center 2xl:items-center">
+        <label
+          class="block relative w-full h-full py-[57px] px-[45px] bg-blue/10 rounded-[12px] 2xl:flex 2xl:justify-center 2xl:items-center
+            bg-no-repeat bg-center bg-cover before:absolute before:top-0 before:left-0 before:bg-white/50 before:w-full before:h-full"
+          :style="{ 'background-image': `url(${imagePreviewUrl})` }"
+        >
           <div
-            class="flex justify-center items-center flex-col gap-y-[25px] h-full border-dashed border-blue border-[1px] rounded-[10px]
+            class="flex justify-center items-center flex-col gap-y-[25px] relative h-full border-dashed border-blue border-[1px] rounded-[10px]
               2xl:w-[324px] 2xl:h-[324px] 2xl:gap-y-[33px]"
           >
             <input class="hidden" type="file" name="image" @change="setRecipeImage">
@@ -103,6 +107,7 @@ import { saveRecipe, uploadRecipeImage, updateRecipe } from '@/services/recipesS
 import { useRecipesStore } from '@/stores/recipesStore';
 import { useUserStore } from '@/stores/userStore';
 import { getNewRecipe } from '@/utils/recipeHelpers';
+import { STATIC_IMAGES_URL } from '@/const/commonConst';
 
 import NavigationBar from '@/components/common/NavigationBar.vue';
 import ClassicFooter from '@/components/common/ClassicFooter.vue';
@@ -132,6 +137,12 @@ const stepCurrentId: Ref<number> = ref(4);
 
 /** Image data to upload */
 const imageToUpload: Ref<any> = ref(null);
+
+/** Store previous image to replace image correctly when user would like to change recipe image */
+const previousImage: Ref<string> = ref('');
+
+/** Image preview url when user use upload input */
+const imagePreview: Ref<string> = ref('#');
 
 /** Update recipe objects' values */
 watch(values, (): void => {
@@ -176,6 +187,18 @@ const difficultLevelNames = computed<string[]>(() => recipeStore.difficultLevels
  */
 const isEdit = computed<boolean>(() => route.meta.edit ? true : false);
 
+/**
+ * Return image preview url based on image upload input value
+ * @returns {string} image preview url
+ */
+const imagePreviewUrl = computed<string>(() => {
+  if (imageToUpload.value === null) {
+    return `${STATIC_IMAGES_URL}/${recipe.value.recipeImage}`;
+  }
+
+  return imagePreview.value;
+});
+
 /** Create/Save new recipe */
 const save = async (): Promise<void> => {
   const preparedRecipeToSave = {
@@ -196,7 +219,7 @@ const save = async (): Promise<void> => {
   }
 
   if (imageToUpload.value !== null) {
-    await uploadRecipeImage(imageToUpload.value, userStore.user!.userId, userStore.token);
+    await uploadRecipeImage(imageToUpload.value, userStore.user!.userId, userStore.token, previousImage.value);
   }
 
   router.push({ name: 'home' });
@@ -243,8 +266,21 @@ const removeStep = (stepId: number): void => {
 
 /** Set recipe image */
 const setRecipeImage = async (e: any) => {
-  recipe.value.recipeImage = userStore.user?.userId + '/' + (e.target.files[0].name as string).split(' ').join('');
-  imageToUpload.value = e.target.files;
+  const files = e.target.files;
+  const file = files[0];
+  recipe.value.recipeImage = userStore.user?.userId + '/' + (file.name as string).split(' ').join('');
+  imageToUpload.value = files;
+
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imagePreview.value = e.target?.result as string;
+    };
+
+    reader.readAsDataURL(file);
+  } else {
+    imagePreview.value = '#';
+  }
 };
 
 /** Update all inputs */
@@ -267,6 +303,7 @@ const prepareRecipeToEdit = (): void => {
     recipe.value = getNewRecipe();
   } else {
     recipe.value = recipeStore.singleRecipe as Recipe;
+    previousImage.value = recipe.value.recipeImage;
   }
 
   refreshInputs();
