@@ -4,7 +4,9 @@ import Step from "@/models/Step";
 import Ingredient from "@/models/Ingredient";
 import RecipeMapper from "../RecipeMapper";
 
-describe('mapObjectToRecipe()', () => {
+describe('RecipeMapper.ts', () => {
+
+  describe('mapObjectToRecipe()', () => {
   it('should return Recipe object if input is correct', () => {
     const TestObject = {
       recipeId: 1,
@@ -98,4 +100,6 @@ describe('mapToRecipes()', () => {
 
     expect(result).toEqual(expectedResult);
   });
-});
+});})
+
+
