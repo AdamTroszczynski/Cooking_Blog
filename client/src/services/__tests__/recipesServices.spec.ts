@@ -15,7 +15,8 @@ import {
   getRecipesPage,
 } from "../recipesServices";
 
-const mock = new MockAdapter(axios);
+describe('recipesServices.ts', () => {
+  const mock = new MockAdapter(axios);
 
 afterEach(() => {
   mock.reset();
@@ -274,4 +275,6 @@ describe('getRecipesPage()', () => {
 
     expect(resultFn).rejects.toThrowError();
   })
+})
+
 })

@@ -5,7 +5,8 @@ import { AUTH_API_URL } from "@/const/commonConst";
 import User from "@/models/User";
 import { describe, it, expect, afterEach } from "vitest";
 
-const mock = new MockAdapter(axios);
+describe('userServices.ts', () => {
+  const mock = new MockAdapter(axios);
 
 afterEach(() => {
   mock.reset();
@@ -129,3 +130,5 @@ describe("getUserFromToken()", () => {
     expect(responseFn).rejects.toThrowError();
   });
 });
+
+})
