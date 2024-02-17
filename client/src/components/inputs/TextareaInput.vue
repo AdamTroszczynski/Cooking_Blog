@@ -41,7 +41,7 @@ const props = defineProps({
 });
 
 /** Catch value and errors from field (input component) */
-const { errorMessage, value } = useField(() => props.name);
+const { errorMessage, value } = useField<string>(() => props.name);
 
 onMounted((): void => {
   if (props.initValue !== '') {
