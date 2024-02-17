@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
           cd client
-          npm install
+          npm install -s
 
     - name: Run tests
       run: |
