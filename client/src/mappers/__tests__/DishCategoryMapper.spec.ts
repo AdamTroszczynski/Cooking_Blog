@@ -1,7 +1,9 @@
 import {describe, it, expect} from "vitest"
 import DishCategoryMapper from "../DishCategoryMapper"
 
-describe('mapObjectToDishCategory',() => {
+describe('DishCategoryMapper.ts', () => {
+
+  describe('mapObjectToDishCategory',() => {
   it('should return DishCategory object if input is correct and dishTypeName has not space', () => {
     const testObject = {
       dishtypeid: 1,
@@ -77,3 +79,5 @@ describe('mapToDishCategories()', () => {
     expect(result).toEqual(expectedResult);
   })
 })
+})
+
