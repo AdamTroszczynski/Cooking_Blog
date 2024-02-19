@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/server.ts",
   "scripts": {
-    "test": "jest --coverage",
+    "test": "jest",
+    "test:cov": "jest --coverage",
     "start": "npm-run-all --parallel dev:server dev:build",
     "build:prod": "webpack build --progress --color",
     "dev:build": "webpack --watch",

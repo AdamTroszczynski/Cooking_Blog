@@ -3,7 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import { json } from 'body-parser';
 import fileUpload from 'express-fileupload';
-import { BASE_CLIENT_URL } from '@/const/commonConst';
+import { BASE_CLIENT_URL, RECIPE_API_PATH, AUTH_API_PATH, STATIC_API_PATH } from '@/const/commonConst';
 import authApi from '@/router/authApi';
 import recipeApi from '@/router/recipeApi';
 import staticAssets from '@/router/staticAssets';
@@ -25,9 +25,11 @@ export const createApp = (): Express => {
 
   // Routes setup
   // app.use('/static', express.static(path.join(__dirname, '../public')));
-  app.use('/static', staticAssets);
-  app.use('/api/auth', authApi);
-  app.use('/api/recipe', recipeApi);
+  app.use(STATIC_API_PATH, staticAssets);
+  app.use(AUTH_API_PATH, authApi);
+  app.use(RECIPE_API_PATH, recipeApi);
 
   return app;
 };
+
+export default createApp();
