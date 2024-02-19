@@ -1,4 +1,9 @@
 {
+  "exclude": ["./coverage", "./dist", "__tests__", "jest.config.js"],
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  },
   "compilerOptions": {
     "outDir": "./dist",
     "target": "es5",
