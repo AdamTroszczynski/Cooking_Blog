@@ -1,10 +1,11 @@
 <template>
-  <div :id="name" :name="name" class="relative" :tabindex="tabindex" @blur="open = false">
+  <div :id="name" :name="name" class="relative" :tabindex="tabindex" @blur="open = false" data-test="SelectInputHeaderDiv">
     <!-- Main input container (selected option here) -->
     <div
       class="flex items-center justify-between w-full px-[25px] py-[22px] h-[50px] border-solid border-[1px] rounded-[12px] border-black
         !bg-transparent font-playfair text-black text-[.75rem] 3xl:h-[58px] 3xl:px-[26px] 3xl:text-[.9375rem]"
       @click="open = !open"
+      data-test="SelectInputSelectDiv"
     >
       {{ selected }}
 
@@ -26,6 +27,7 @@
         v-for="(option, index) in data"
         :key="index"
         @click="selectOption(option as string)"
+        data-test="SelectInputOptionDiv"
       >
         {{ option }}
       </div>

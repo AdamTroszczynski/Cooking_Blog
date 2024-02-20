@@ -12,14 +12,16 @@
         :placeholder="placeholder"
         v-model="value"
         :name="name"
+        data-test="ClassicInputMainInput"
       />
 
       <div
         v-if="!noIcon"
         class="flex justify-center items-center absolute top-0 right-0 w-[53px] h-[50px] border-l-[1px]
         border-l-black border-l-solid 3xl:w-[61px] 3xl:h-[58px]"
+        data-test="ClassicInputIconDiv"
       >
-        <component class="w-[16px] h-auto 3xl:w-[20px]" :is="getIcon" />
+        <component class="w-[16px] h-auto 3xl:w-[20px]" :is="getIcon"/>
       </div>
     </div>
 

@@ -3,6 +3,7 @@
     v-if="isNormalLink"
     :class="linkStyles"
     :href="goTo"
+    data-test="LinkButtonMainLink"
   >
     <slot></slot>
   </a>
@@ -11,6 +12,7 @@
     v-else-if="isButton"
     :class="linkStyles"
     @click="emit('clickAction')"
+    data-test="LinkButtonMainButton"
   >
     <slot></slot>
   </button>

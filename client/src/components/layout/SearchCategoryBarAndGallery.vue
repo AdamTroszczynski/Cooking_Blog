@@ -3,7 +3,7 @@
     <NavigationBar />
 
     <header class="mt-[80px] 2xl:mt-[100px]">
-      <h1 class="text-black text-center font-merri text-[1.875rem] font-bold 2xl:text-[3.4375rem]">
+      <h1 class="text-black text-center font-merri text-[1.875rem] font-bold 2xl:text-[3.4375rem]" data-test="SearchCategoryBarAndGalleryHeader">
         <slot name="heading"></slot>
       </h1>
     </header>
@@ -20,7 +20,7 @@
         </div>
       </section>
 
-      <section>
+      <section data-test="SearchCategoryBarAndGalleryContentSection">
         <slot name="content"></slot>
       </section>
     </main>
