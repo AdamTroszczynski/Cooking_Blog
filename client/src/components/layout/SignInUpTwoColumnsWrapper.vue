@@ -8,19 +8,22 @@
         <h1
           class="max-w-[300px] mx-auto text-black font-merri text-center text-[1.875rem] font-bold leading-[45px]
             lg:text-left lg:mx-0 3xl:max-w-[561px] 3xl:text-[3.4375rem] 3xl:leading-[70px]"
+          data-test="SignInUpTwoColumnsWrapperHeading"
         >
           <slot name="heading"></slot>
         </h1>
       </header>
 
       <main class="px-[15px] lg:px-0">
-        <div class="flex flex-col gap-y-[30px] mb-[40px] 3xl:gap-y-[40px] 3xl:mb-[50px] 3xl:max-w-[329px]">
+        <div class="flex flex-col gap-y-[30px] mb-[40px] 3xl:gap-y-[40px] 3xl:mb-[50px] 3xl:max-w-[329px]"
+        data-test="SignInUpTwoColumnsWrapperForm">
           <slot name="form"></slot>
         </div>
 
         <ActionButton
           class="w-full 3xl:w-auto"
           @clickAction="emitAuthAction()"
+          data-test="SignInUpTwoColumnsWrapperActionButton"
         >
           {{ isRegisterLayout ? 'Create Account' : 'Login' }}
         </ActionButton>

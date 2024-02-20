@@ -10,6 +10,7 @@
         :placeholder="placeholder"
         v-model="value"
         :name="name"
+        data-test="TextareaInputMainTextarea"
       ></textarea>
     </div>
 

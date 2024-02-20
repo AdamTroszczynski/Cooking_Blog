@@ -8,6 +8,7 @@
       isColored && !isWhite ? 'bg-blue' : 'bg-black',
       biggerBorderRadius ? 'rounded-[8px]' : 'rounded-[6px] md:rounded-[8px]'
     ]"
+    data-test="ActionButtonMainBtn"
   >
     <slot></slot>
   </button>

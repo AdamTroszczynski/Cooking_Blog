@@ -2,6 +2,7 @@
   <div
     class="flex flex-col gap-y-[9px] items-center"
     :class="staySmall ? '' : '2xl:gap-y-[12px]'"
+    data-test="DishCategoryCardHeaderDiv"
   >
     <div
       class="flex justify-center items-center w-[78px] h-[78px] border-solid border-[1px] border-black rounded-[9px]"
@@ -10,6 +11,7 @@
         staySmall ? '' : '2xl:w-[123px] 2xl:h-[123px] 2xl:rounded-[15px]'
       ]"
       @click="emitOnSelect()"
+      data-test="DishCategoryCardMainDiv"
     >
       <component
         :is="getIcon"
@@ -21,6 +23,7 @@
     <p
       class="text-[.75rem] font-playfair text-black"
       :class="staySmall ? '' : '2xl:text-[.9375rem]'"
+      data-test="DishCategoryCardMainParagraph"
     >
       <slot></slot>
     </p>
