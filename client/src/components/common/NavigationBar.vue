@@ -26,7 +26,7 @@
         </button>
       </div>
 
-      <div class="flex items-end flex-col gap-y-[25px] mb-[37px] lg:flex-row lg:items-center lg:gap-x-[18px] lg:mb-0 lg:mr-[18px]" data-test="NavigationBarNav">
+      <div class="flex items-end flex-col gap-y-[25px] mb-[37px] lg:flex-row lg:items-center lg:gap-x-[18px] lg:mb-0 lg:mr-[18px]">
         <template v-if="userStore.isUserLoggedIn">
           <LinkButton go-to="/my-recipes">My Recipes</LinkButton>
           <LinkButton go-to="/create-recipe">Create recipe</LinkButton>
@@ -38,7 +38,7 @@
       </div>
 
       <div v-if="userStore.isUserLoggedIn" class="flex justify-end items-center pt-[18px] border-t-solid border-t-[1px] border-t-black lg:border-t-0 lg:pt-0">
-        <LinkButton is-button @click-action="handleLogout()" data-test="NavigationBarLogout">Logout</LinkButton>
+        <LinkButton is-button @click-action="handleLogout()">Logout</LinkButton>
         <div class="w-[1px] h-[22px] ml-[12px] mr-[10px] bg-black lg:h-[33px] lg:mx-[16px]"></div>
         <p class="mr-[16px] text-black text-[.9375rem] font-medium font-playfair truncate lg:mr-[24px] lg:text-[1.25rem]">
           {{ userStore.user?.username }}
