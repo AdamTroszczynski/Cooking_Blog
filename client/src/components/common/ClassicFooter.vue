@@ -22,7 +22,7 @@
           Cook, Share, Enjoy - Your Culinary Journey with Recipy Begins Here! 🍽️✨
         </p>
 
-        <ActionButton @click-action="router.push({ name: 'explore' })">Start Cooking</ActionButton>
+        <ActionButton @clickAction="router.push({ name: 'explore' })" data-test="ClassicFooterButton">Start Cooking</ActionButton>
       </section>
 
       <section class="flex flex-col gap-y-[20px] mb-[65px]">
