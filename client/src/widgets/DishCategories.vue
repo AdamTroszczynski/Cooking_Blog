@@ -3,6 +3,7 @@
     <h3
       class="mb-[20px] font-playfair text-[1.125rem] text-black"
       :class="staySmall ? '' : 'lg:mb-[25px] lg:text-[1.5625rem]'"
+      data-test="DishCategoriesHeader"
     >
       Select dish category
     </h3>
@@ -10,6 +11,7 @@
     <div
       class="grid grid-cols-[repeat(auto-fill,minmax(78px,1fr))] gap-[25px] justify-items-start"
       :class="staySmall ? '' : '2xl:gap-[37px] 2xl:grid-cols-[repeat(auto-fill,minmax(123px,1fr))]'"
+      data-test="DishCategoriesMainDiv"
     >
       <DishCategoryCard
         v-for="dishType in recipesStore.dishCategories"
