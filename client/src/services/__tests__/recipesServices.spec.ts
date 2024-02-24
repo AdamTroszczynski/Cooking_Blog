@@ -219,7 +219,7 @@ describe('recipesServices.ts', () => {
       const token = 'testToken';
       const response = [
         {
-          created: 'testDate',
+          created: 1,
           difficultLevel: 'testLevel',
           dishType: 'testType',
           likesCount: 0,
@@ -260,7 +260,7 @@ describe('recipesServices.ts', () => {
       const isUser = false;
       const response = [
         {
-          created: 'testDate',
+          created: 1,
           difficultLevel: 'testLevel',
           dishType: 'testType',
           likesCount: 0,
