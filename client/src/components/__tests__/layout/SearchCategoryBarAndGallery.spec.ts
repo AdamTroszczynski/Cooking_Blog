@@ -1,12 +1,11 @@
-import {expect, describe, it} from "vitest";
-import {VueWrapper, mount} from "@vue/test-utils";
-import SearchCategoryBarAndGallery from "@/components/layout/SearchCategoryBarAndGallery.vue";
-
+import { expect, describe, it } from 'vitest';
+import { VueWrapper, mount } from '@vue/test-utils';
+import SearchCategoryBarAndGallery from '@/components/layout/SearchCategoryBarAndGallery.vue';
 
 describe('SearchCategoryBarAndGallery.vue', () => {
   let wrapper: VueWrapper;
   const createComponent = (config = {}) => {
-    wrapper = mount(SearchCategoryBarAndGallery,{
+    wrapper = mount(SearchCategoryBarAndGallery, {
       global: {
         stubs: {
           ViewWrapper: false,
@@ -17,7 +16,10 @@ describe('SearchCategoryBarAndGallery.vue', () => {
         }
       },
       ...config,
-  })};
+    })
+  };
+  const findHeader = () => wrapper.find('[data-test="SearchCategoryBarAndGalleryHeader"]');
+  const findSection = () => wrapper.find('[data-test="SearchCategoryBarAndGalleryContentSection"]');
 
   describe('Slots', () => {
     it('should render contents in heading slot', () => {
@@ -26,7 +28,8 @@ describe('SearchCategoryBarAndGallery.vue', () => {
           heading: 'testContent'
         }
       });
-      expect(wrapper.find('[data-test="SearchCategoryBarAndGalleryHeader"]').text()).toContain('testContent');
+
+      expect(findHeader().text()).toContain('testContent');
     });
 
     it('should render contents in content slot', () => {
@@ -35,7 +38,8 @@ describe('SearchCategoryBarAndGallery.vue', () => {
           content: 'testContent'
         }
       });
-      expect(wrapper.find('[data-test="SearchCategoryBarAndGalleryContentSection"]').text()).toContain('testContent');
-    })
+
+      expect(findSection().text()).toContain('testContent');
+    });
   });
-})
+});

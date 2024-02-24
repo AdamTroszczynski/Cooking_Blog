@@ -1,11 +1,15 @@
-import {expect, describe, it} from "vitest";
-import {VueWrapper, mount} from "@vue/test-utils";
-import SignInUpTwoColumnsWrapper from "@/components/layout/SignInUpTwoColumnsWrapper.vue";
-import ActionButton from "@/components/buttons/ActionButton.vue";
+import { expect, describe, it } from 'vitest';
+import { VueWrapper, mount } from '@vue/test-utils';
+import SignInUpTwoColumnsWrapper from '@/components/layout/SignInUpTwoColumnsWrapper.vue';
+import ActionButton from '@/components/buttons/ActionButton.vue';
 
 describe('SignInUpTwoColumnsWrapper.vue', () => {
   let wrapper: VueWrapper;
-  const createComponent = (config = {}) => {wrapper = mount(SignInUpTwoColumnsWrapper, config);};
+  const createComponent = (config = {}) => { wrapper = mount(SignInUpTwoColumnsWrapper, config); };
+  const findButton = () => wrapper.find('[data-test="SignInUpTwoColumnsWrapperActionButton"]');
+  const findHeader = () => wrapper.find('[data-test="SignInUpTwoColumnsWrapperHeading"]');
+  const findForm = () => wrapper.find('[data-test="SignInUpTwoColumnsWrapperForm"]');
+  const findActionButton = () => wrapper.findComponent(ActionButton);
 
   describe('Props', () => {
     it('should render value in ActionButton based on prop.isRegisterLayout', async () => {
@@ -14,20 +18,22 @@ describe('SignInUpTwoColumnsWrapper.vue', () => {
           isRegisterLayout: true
         }
       });
-      expect(wrapper.find('[data-test="SignInUpTwoColumnsWrapperActionButton"]').text()).toContain('Create Account')
-      expect(wrapper.find('[data-test="SignInUpTwoColumnsWrapperActionButton"]').text()).not.toContain('Login')
-      await wrapper.setProps({isRegisterLayout: false});
-      expect(wrapper.find('[data-test="SignInUpTwoColumnsWrapperActionButton"]').text()).not.toContain('Create Account')
-      expect(wrapper.find('[data-test="SignInUpTwoColumnsWrapperActionButton"]').text()).toContain('Login')
-    })
+
+      expect(findButton().text()).toContain('Create Account');
+      expect(findButton().text()).not.toContain('Login');
+      await wrapper.setProps({ isRegisterLayout: false });
+      expect(findButton().text()).not.toContain('Create Account');
+      expect(findButton().text()).toContain('Login');
+    });
   });
 
   describe('Emits', () => {
-    it('should emit onSubmit if ActionButton is clicked', async () =>{
+    it('should emit onSubmit if ActionButton is clicked', async () => {
       createComponent();
-      await wrapper.findComponent(ActionButton).trigger('click');
+
+      await findActionButton().trigger('click');
       expect(wrapper.emitted().onSubmit).toBeDefined();
-   })
+    });
   });
 
   describe('Slots', () => {
@@ -37,7 +43,8 @@ describe('SignInUpTwoColumnsWrapper.vue', () => {
           heading: 'testContent'
         }
       });
-      expect(wrapper.find('[data-test="SignInUpTwoColumnsWrapperHeading"]').text()).toContain('testContent');
+
+      expect(findHeader().text()).toContain('testContent');
     });
 
     it('shoud render contents in form slot', () => {
@@ -46,7 +53,8 @@ describe('SignInUpTwoColumnsWrapper.vue', () => {
           form: 'testContent'
         }
       });
-      expect(wrapper.find('[data-test="SignInUpTwoColumnsWrapperForm"]').text()).toContain('testContent');
-    })
+
+      expect(findForm().text()).toContain('testContent');
+    });
   });
-})
+});

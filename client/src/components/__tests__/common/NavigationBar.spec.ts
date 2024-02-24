@@ -1,7 +1,7 @@
-import { expect, describe, it, vi, type Mock, beforeEach } from "vitest";
-import { VueWrapper, mount } from "@vue/test-utils";
-import NavigationBar from "@/components/common/NavigationBar.vue";
-import { createTestingPinia } from "@pinia/testing";
+import { expect, describe, it, vi } from 'vitest';
+import { VueWrapper, mount } from '@vue/test-utils';
+import NavigationBar from '@/components/common/NavigationBar.vue';
+import { createTestingPinia } from '@pinia/testing';
 
 vi.mock('vue-router');
 
@@ -19,14 +19,17 @@ describe('ClassicFooter.vue', () => {
       ...config,
     });
   };
+  const findMenu = () => wrapper.find('[data-test="NavigationBarMenu"]');
+  const findButton = () => wrapper.find('[data-test="NavigationBarButton"]');
 
-  describe("Logic", () => {
+  describe('Logic', () => {
     it('should show Menu if isMenuActive is true', async () => {
       createComponent();
-      expect(wrapper.find('[data-test="NavigationBarMenu"]').classes()).toContain('hidden');
-      await wrapper.find('[data-test="NavigationBarButton"]').trigger('click');
-      expect(wrapper.find('[data-test="NavigationBarMenu"]').classes()).not.toContain('hidden');
-      expect(wrapper.find('[data-test="NavigationBarMenu"]').classes()).toContain('block');
+
+      expect(findMenu().classes()).toContain('hidden');
+      await findButton().trigger('click');
+      expect(findMenu().classes()).not.toContain('hidden');
+      expect(findMenu().classes()).toContain('block');
     });
   });
 });

@@ -1,10 +1,11 @@
-import {expect, describe, it} from "vitest";
-import {VueWrapper, mount} from "@vue/test-utils";
-import ViewWrapper from "@/components/layout/ViewWrapper.vue";
+import { expect, describe, it } from 'vitest';
+import { VueWrapper, mount } from '@vue/test-utils';
+import ViewWrapper from '@/components/layout/ViewWrapper.vue';
 
 describe('ViewWrapper.vue', () => {
   let wrapper: VueWrapper;
-  const createComponent = (config = {}) => {wrapper = mount(ViewWrapper, config);};
+  const createComponent = (config = {}) => { wrapper = mount(ViewWrapper, config); };
+  const findMainDiv = () => wrapper.find('[data-test="ViewWrapperMainDiv"]');
 
   describe('Slots', () => {
     it('should render contents in default slot', () => {
@@ -13,9 +14,9 @@ describe('ViewWrapper.vue', () => {
           default: 'testSlot'
         }
       });
-      expect(wrapper.find('[data-test="ViewWrapperMainDiv"]').text()).toContain('testSlot');
-    })
-  })
 
-})
+      expect(findMainDiv().text()).toContain('testSlot');
+    });
+  });
+});
 

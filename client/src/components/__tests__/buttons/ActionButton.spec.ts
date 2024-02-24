@@ -1,10 +1,11 @@
-import {expect, describe, it} from "vitest";
-import {VueWrapper, mount} from "@vue/test-utils";
-import ActionButton from "@/components/buttons/ActionButton.vue";
+import {expect, describe, it} from 'vitest';
+import {VueWrapper, mount} from '@vue/test-utils';
+import ActionButton from '@/components/buttons/ActionButton.vue';
 
 describe('ActionButton.vue', () => {
   let wrapper: VueWrapper;
   const createComponent = (config = {}) => {wrapper = mount(ActionButton,config)};
+  const findButton = () => wrapper.find('[data-test="ActionButtonMainBtn"]');
 
   describe('Props', () => {
     it('should set classes based on prop.isColored', async () => {
@@ -13,13 +14,14 @@ describe('ActionButton.vue', () => {
           isColored: true
         }
       });
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('bg-blue');
+
+      expect(findButton().classes()).toContain('bg-blue');
       await wrapper.setProps({isColored: false});
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('bg-black');
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).not.toContain('bg-blue');
+      expect(findButton().classes()).toContain('bg-black');
+      expect(findButton().classes()).not.toContain('bg-blue');
       await wrapper.setProps({isColored: true, isWhite: true});
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('bg-black');
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).not.toContain('bg-blue');
+      expect(findButton().classes()).toContain('bg-black');
+      expect(findButton().classes()).not.toContain('bg-blue');
     });
 
     it('should set classes based on prop.isWhite', async () => {
@@ -28,13 +30,14 @@ describe('ActionButton.vue', () => {
           isWhite: true
         }
       });
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('bg-white');
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('text-black');
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).not.toContain('text-white');
+
+      expect(findButton().classes()).toContain('bg-white');
+      expect(findButton().classes()).toContain('text-black');
+      expect(findButton().classes()).not.toContain('text-white');
       await wrapper.setProps({isWhite: false});
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('bg-black');
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).not.toContain('bg-white');
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('text-white');
+      expect(findButton().classes()).toContain('bg-black');
+      expect(findButton().classes()).not.toContain('bg-white');
+      expect(findButton().classes()).toContain('text-white');
     });
 
     it('should set classes based on prop.biggerBorderRadius', async () => {
@@ -43,19 +46,21 @@ describe('ActionButton.vue', () => {
           biggerBorderRadius: true
         }
       });
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('rounded-[8px]');
+
+      expect(findButton().classes()).toContain('rounded-[8px]');
       await wrapper.setProps({biggerBorderRadius: false});
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('rounded-[6px]');
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').classes()).toContain('md:rounded-[8px]');
-    })
+      expect(findButton().classes()).toContain('rounded-[6px]');
+      expect(findButton().classes()).toContain('md:rounded-[8px]');
+    });
   });
 
   describe('Emits', () => {
     it('should emit clickAction if button is clicked', async () => {
       createComponent();
-      await wrapper.find('[data-test="ActionButtonMainBtn"]').trigger('click');
+
+      await findButton().trigger('click');
       expect(wrapper.emitted().clickAction).toBeDefined();
-    })
+    });
   });
 
   describe('Slots', () => {
@@ -65,8 +70,8 @@ describe('ActionButton.vue', () => {
           default: 'testContent'
         }
       });
-      expect(wrapper.find('[data-test="ActionButtonMainBtn"]').text()).toContain('testContent');
-    })
-  });
 
-})
+      expect(findButton().text()).toContain('testContent');
+    });
+  });
+});
