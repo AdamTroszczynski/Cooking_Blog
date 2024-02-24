@@ -1,11 +1,12 @@
-import {expect, describe, it} from "vitest";
-import {VueWrapper, mount} from "@vue/test-utils";
-import { nextTick } from "vue";
-import TextareaInput from "@/components/inputs/TextareaInput.vue";
+import { expect, describe, it } from 'vitest';
+import { VueWrapper, mount } from '@vue/test-utils';
+import { nextTick } from 'vue';
+import TextareaInput from '@/components/inputs/TextareaInput.vue';
 
 describe('TextareaInput.vue', () => {
   let wrapper: VueWrapper;
-  const createComponent = (config = {}) => {wrapper = mount(TextareaInput, config)};
+  const createComponent = (config = {}) => { wrapper = mount(TextareaInput, config) };
+  const findTextarea = () => wrapper.find('[data-test="TextareaInputMainTextarea"]');
 
   describe('Props', () => {
     it('should set name based on prop.name', () => {
@@ -14,7 +15,8 @@ describe('TextareaInput.vue', () => {
           name: 'testName'
         }
       });
-      expect(wrapper.find('[data-test="TextareaInputMainTextarea"]').attributes()['name']).toBe('testName');
+
+      expect(findTextarea().attributes()['name']).toBe('testName');
     });
 
     it('should set placeholder based on prop.placeholder', () => {
@@ -24,7 +26,8 @@ describe('TextareaInput.vue', () => {
           placeholder: 'testPlaceholder'
         }
       });
-      expect(wrapper.find('[data-test="TextareaInputMainTextarea"]').attributes()['placeholder']).toBe('testPlaceholder');
+
+      expect(findTextarea().attributes()['placeholder']).toBe('testPlaceholder');
     });
 
     it('should set value based on prop.initValue', async () => {
@@ -34,8 +37,9 @@ describe('TextareaInput.vue', () => {
           initValue: 'testValue'
         }
       });
+
       await nextTick();
-      expect(wrapper.find('[data-test="TextareaInputMainTextarea"]').element.value).toBe('testValue');
-    })
-  })
-})
+      expect(findTextarea().element.value).toBe('testValue');
+    });
+  });
+});

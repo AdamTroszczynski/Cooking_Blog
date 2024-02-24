@@ -1,19 +1,21 @@
-import {expect, describe, it} from "vitest";
-import {VueWrapper, mount} from "@vue/test-utils";
-import LinkButton from "@/components/buttons/LinkButton.vue";
-import { RouterLink } from "vue-router";
+import { expect, describe, it } from 'vitest';
+import { VueWrapper, mount } from '@vue/test-utils';
+import LinkButton from '@/components/buttons/LinkButton.vue';
+import { RouterLink } from 'vue-router';
 
 describe('LinkButton.vue', () => {
   let wrapper: VueWrapper;
   const createComponent = (config = {}) => {
-    wrapper = mount(LinkButton,{
+    wrapper = mount(LinkButton, {
       global: {
         stubs: ['RouterLink'],
       },
       ...config,
-  })};
-
+    })
+  };
   const findRouterLink = () => wrapper.findComponent(RouterLink);
+  const findLink = () => wrapper.find('[data-test="LinkButtonMainLink"]');
+  const findButton = () => wrapper.find('[data-test="LinkButtonMainButton"]');
 
   describe('Props', () => {
     it('should render only LinkButtonMainLink if prop.isNormalLink is true', async () => {
@@ -22,10 +24,11 @@ describe('LinkButton.vue', () => {
           isNormalLink: true
         }
       });
-      expect(wrapper.find('[data-test="LinkButtonMainLink"]').exists()).toBe(true);
-      expect(wrapper.find('[data-test="LinkButtonMainButton"]').exists()).toBe(false);
+
+      expect(findLink().exists()).toBe(true);
+      expect(findButton().exists()).toBe(false);
       expect(findRouterLink().exists()).toBe(false);
-    })
+    });
 
     it('should render only LinkButtonMainButton if prop.isButton is true', () => {
       createComponent({
@@ -33,17 +36,19 @@ describe('LinkButton.vue', () => {
           isButton: true
         }
       });
-      expect(wrapper.find('[data-test="LinkButtonMainButton"]').exists()).toBe(true);
-      expect(wrapper.find('[data-test="LinkButtonMainLink"]').exists()).toBe(false);
+
+      expect(findButton().exists()).toBe(true);
+      expect(findLink().exists()).toBe(false);
       expect(findRouterLink().exists()).toBe(false);
-    })
+    });
 
     it('should render only RouterLink if prop.isNormalLink and prop.isButton are false', () => {
       createComponent();
+
       expect(findRouterLink().exists()).toBe(true);
-      expect(wrapper.find('[data-test="LinkButtonMainButton"]').exists()).toBe(false);
-      expect(wrapper.find('[data-test="LinkButtonMainLink"]').exists()).toBe(false);
-    })
+      expect(findButton().exists()).toBe(false);
+      expect(findLink().exists()).toBe(false);
+    });
 
     it('should set goTo based on prop.goTo', async () => {
       createComponent({
@@ -51,10 +56,11 @@ describe('LinkButton.vue', () => {
           goTo: 'testPath',
         }
       });
+
       expect(findRouterLink().props()['to']).toBe('testPath');
-      await wrapper.setProps({isNormalLink: true});
-      expect(wrapper.find('[data-test="LinkButtonMainLink"]').attributes()['href']).toBe('testPath');
-    })
+      await wrapper.setProps({ isNormalLink: true });
+      expect(findLink().attributes()['href']).toBe('testPath');
+    });
   });
 
   describe('Emits', () => {
@@ -64,9 +70,10 @@ describe('LinkButton.vue', () => {
           isButton: true
         }
       });
-      await wrapper.find('[data-test="LinkButtonMainButton"]').trigger('click');
+
+      await findButton().trigger('click');
       expect(wrapper.emitted().clickAction).toBeDefined();
-    })
+    });
   });
 
   describe('Slots', () => {
@@ -80,9 +87,10 @@ describe('LinkButton.vue', () => {
           default: 'testContent'
         }
       });
-      expect(wrapper.find('[data-test="LinkButtonMainLink"]').text()).toContain('testContent');
-      await wrapper.setProps({isNormalLink: false, isButton: true});
-      expect(wrapper.find('[data-test="LinkButtonMainButton"]').text()).toContain('testContent');
-    })
-  })
-})
+
+      expect(findLink().text()).toContain('testContent');
+      await wrapper.setProps({ isNormalLink: false, isButton: true });
+      expect(findButton().text()).toContain('testContent');
+    });
+  });
+});
