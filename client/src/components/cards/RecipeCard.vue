@@ -9,6 +9,7 @@
       class="h-[200px] mb-[15px] border-solid border-[1px] border-black rounded-[15px] bg-center bg-cover bg-no-repeat
         3xl:h-[214px] 3xl:mb-[16px]"
       :style="{ 'background-image': `url(${imageUrl})` }"
+      data-test="RecipeCardImageDiv"
     ></div>
 
     <div class="flex justify-between items-center gap-x-[20px] font-playfair text-black text-[.9375rem]" data-test="RecipeCardRecipeDiv">
