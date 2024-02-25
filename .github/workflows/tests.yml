@@ -68,6 +68,7 @@ jobs:
       - name: Execute SQL Scripts
         run: |
           export PGPASSWORD=test
+          psql -h localhost -U root -d postgres -c "CREATE DATABASE cookingBlog_test;"
           psql -h localhost -U root -d cookingBlog_test -a -f server/src/sql/cookingBlogInit.sql
 
       - name: Wait for SQL Scripts to Execute
