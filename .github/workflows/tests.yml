@@ -7,12 +7,12 @@ on:
     branches: [ "main", "dev" ]
 
 jobs:
-  build:
+  unit-tests:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [17.x, 18.x]
+        node-version: [18.x]
 
     steps:
     - name: Checkout repository
@@ -32,3 +32,53 @@ jobs:
       run: |
           cd client
           npm run test:unit
+
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: |
+            cd server
+            npm install -s
+
+      - name: Execute SQL Scripts
+        run: |
+          psql -h localhost -U root -p test -d cookingBlog_test -a -f path/to/your/sql/script.sql
+
+      - name: Wait for SQL Scripts to Execute
+        run: sleep 5
+
+      - name: Start backend service (API)
+        run: |
+            cd server
+            (npm run start&)
+
+      - name: Wait for Backend to Start
+        run: sleep 10
+
+      - name: Run Tests
+        run: npm test
