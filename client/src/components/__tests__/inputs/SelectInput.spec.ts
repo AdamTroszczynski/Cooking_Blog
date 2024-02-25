@@ -63,8 +63,9 @@ describe('selectInput.vue', () => {
 
       await findSelectDiv().trigger('click');
       await findOptionDiv().trigger('click');
-      expect(wrapper.emitted().input).toBeDefined();
-      expect(wrapper.emitted().input[0]).toEqual(['testData1']);
+
+      expect(wrapper.emitted()['update:modelValue']).toBeDefined();
+      expect(wrapper.emitted()['update:modelValue'][0]).toEqual(['testData1']);
     });
   });
 
