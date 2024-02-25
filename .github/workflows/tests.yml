@@ -67,7 +67,7 @@ jobs:
 
       - name: Execute SQL Scripts
         run: |
-          psql -h localhost -U root -p test -d cookingBlog_test -a -f path/to/your/sql/script.sql
+          psql -h localhost -U root -d cookingBlog_test -a -f server/src/sql/cookingBlogInit.sql
 
       - name: Wait for SQL Scripts to Execute
         run: sleep 5
