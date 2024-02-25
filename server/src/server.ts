@@ -1,8 +1,8 @@
 import app from '@/app';
-import dotenv from 'dotenv';
+import { loadEnv } from './utils/envLoader/envLoader';
 import { BASE_URL } from '@/const/commonConst';
 
-dotenv.config();
+loadEnv();
 
 const port = process.env.PORT || 3000;
 

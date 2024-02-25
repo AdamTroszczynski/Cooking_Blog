@@ -1,4 +1,18 @@
 # Cooking Blog
+
+## Table of Contents
+
+- [Authors](#authors)
+- [About](#about)
+- [Project setup](#project-setup)
+  - [For developing](#for-developing)
+  - [Client](#client-setup)
+  - [Database](#database-setup)
+  - [Server](#server-setup)
+- [API](docs/api_docs.md)
+
+<a id="authors"></a>
+
 ## Authors:
 
 | Name | Role |
@@ -12,7 +26,11 @@
 
 Cooking Blog is culinary blog app where users can add, explore and share dish recipes.
 
+<a id="project-setup"></a>
+
 ## Project setup
+
+<a id="for-developing"></a>
 
 ### For developing app
 
@@ -20,23 +38,26 @@ Recommended IDE - Visual Studio Code
 
 Recommended extensions (Copy id and paste in extension search bar in VS Code):
 
-| Extension Name | Extension ID |
-| --- | --- |
-| EditorConfig | `EditorConfig.EditorConfig` |
-| Eslint | `dbaeumer.vscode-eslint` |
-| GitLens | `eamodio.gitlens` |
-| PathIntellisense | `christian-kohler.path-intellisense` |
-| Prettier | `esbenp.prettier-vscode` |
-| Px to Rem | `cipchk.cssrem` |
-| TailwindCSS | `bradlc.vscode-tailwindcss` |
-| Todo Highlight | `wayou.vscode-todo-highlight` |
-| Vue Typescript Support | `Vue.vscode-typescript-vue-plugin` |
-| Vue Language Support | `Vue.volar` |
-| Vue Snippets | `sdras.vue-vscode-snippets` |
+| Extension Name         | Extension ID                         |
+| ---------------------- | ------------------------------------ |
+| EditorConfig           | `EditorConfig.EditorConfig`          |
+| Eslint                 | `dbaeumer.vscode-eslint`             |
+| GitLens                | `eamodio.gitlens`                    |
+| PathIntellisense       | `christian-kohler.path-intellisense` |
+| Prettier               | `esbenp.prettier-vscode`             |
+| Px to Rem              | `cipchk.cssrem`                      |
+| TailwindCSS            | `bradlc.vscode-tailwindcss`          |
+| Todo Highlight         | `wayou.vscode-todo-highlight`        |
+| Vue Typescript Support | `Vue.vscode-typescript-vue-plugin`   |
+| Vue Language Support   | `Vue.volar`                          |
+| Vue Snippets           | `sdras.vue-vscode-snippets`          |
+
+<a id="client-setup"></a>
 
 ### [ Client ]
 
 #### Requirements:
+
 - Node version >= 16
 
 ---
@@ -72,9 +93,12 @@ and then you can run tests
 npm run test:e2e
 ```
 
+<a id="database-setup"></a>
+
 ### [ Database ]
 
 #### Requirements:
+
 - Postgresql server
 - Some client for Postgresql ([DataGrip](https://www.jetbrains.com/datagrip/?source=google&medium=cpc&campaign=EMEA_en_PL_DataGrip_Branded&term=datagrip&content=555122603706&gad=1&gclid=CjwKCAiA1MCrBhAoEiwAC2d64a92Dslmaw4l5vO643oLb8gHv2dxRpahbWFs2vdcGVfMBEEh9jCgLRoCK3IQAvD_BwE), [PgAdmin](https://www.pgadmin.org/download/))
 
@@ -85,6 +109,7 @@ Install PostgreSQL server
 Then create two databases `cookingBlog` and `cookingBlog_test`
 
 For example on postgres account you can type
+
 ```sh
 createdb cookingBlog
 createdb cookingBlog_test
@@ -96,9 +121,12 @@ Next you need to create all tables structure, in your postgresql client or by us
 
 At the end you can run insert script `insertBasicData.sql` to insert some testing data to database
 
+<a id="server-setup"></a>
+
 ### [ Server ]
 
 #### Requirements:
+
 - Node version >= 16
 
 ---
@@ -110,13 +138,27 @@ cd server
 npm install
 ```
 
-Create `.env` file with all environment variables (<b>port 8080 is important because client send requests to server with this port so try to not change it</b>)
+Create `.env` and `.env.test.local` files with all environment variables (<b>port 8080 is important because client send requests to server with this port so try to not change it</b>)
+
+##### [ .env ]
 
 ```txt
 PORT=8080
 DB_USER=[user]
 DB_HOST=[host]
-DB_NAME=[database name]
+DB_NAME="cookingBlog"
+DB_PASSWORD=[password]
+DB_PORT=[database port]
+TOKEN_KEY=[some strong key string]
+```
+
+##### [ .env.test.local ]
+
+```txt
+PORT=8080
+DB_USER=[user]
+DB_HOST=[host]
+DB_NAME="cookingBlog_test"
 DB_PASSWORD=[password]
 DB_PORT=[database port]
 TOKEN_KEY=[some strong key string]
@@ -132,6 +174,14 @@ npm start
 
 To run unit tests
 
+First run backend service:
+
 ```sh
-coming soon ...
+npm start
+```
+
+then run tests
+
+```sh
+npm test
 ```

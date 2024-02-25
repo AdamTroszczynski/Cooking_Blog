@@ -1,7 +1,7 @@
 import { Pool, type QueryResult } from 'pg';
-import dotenv from 'dotenv';
+import { loadEnv } from '@/utils/envLoader/envLoader';
 
-dotenv.config();
+loadEnv();
 
 /** Create pool connection */
 export const client = new Pool({
