@@ -16,6 +16,8 @@ describe('recipeApi', (): void => {
         .expect(200)
         .then((res) => {
           expect(res.statusCode).toBe(200);
+          expect(Array.isArray(res.body)).toBeTruthy();
+          expect(res.body.length).toEqual(0);
         });
     });
   });
