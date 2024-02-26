@@ -221,7 +221,7 @@ const save = async (): Promise<void> => {
   if (imageToUpload.value !== null) {
     await uploadRecipeImage(imageToUpload.value, userStore.user!.userId, userStore.token, previousImage.value);
   }
-
+  recipeStore.setDishCategory(recipe.value.dishType.replace(' ', '').toLowerCase());
   router.push({ name: 'myRecipes' });
 };
 
