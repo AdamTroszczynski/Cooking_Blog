@@ -45,6 +45,7 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
         ports:
           - 5432:5432
         options: >-
@@ -59,8 +60,8 @@ jobs:
 
       - name: Create database and tables
         run: |
-          psql -h postgres -U postgres -c 'CREATE DATABASE "cookingBlog_test";'
-          psql -h postgres -U postgres -d cookingBlog_test -a -f server/src/sql/cookingBlogInit.sql
+          psql -h localhost -U postgres -c 'CREATE DATABASE "cookingBlog_test";'
+          psql -h localhost -U postgres -d cookingBlog_test -a -f server/src/sql/cookingBlogInit.sql
         env:
           PGPASSWORD: postgres
 
