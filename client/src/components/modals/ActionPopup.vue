@@ -1,5 +1,5 @@
 <template>
-  <dialog :id="popupId" class="modal">
+  <dialog :id="popupId" class="modal" data-test="ActionPopupDialog">
     <div class="modal-box md:w-[427px] w-[300px] h-[237px] bg-white flex flex-col justify-between items-center p-[40px]">
       <h3 class="text-black font-merri text-[1.25rem] w-[223px] text-center"><slot></slot></h3>
       <div class="modal-action w-full">
@@ -8,7 +8,7 @@
           <div class="absolute z-10 bg-white md:top-[-20px] md:left-[85%] top-[-20px] left-[75%]"><DessertIcon></DessertIcon></div>
           {{ actionButtonText }}
           </ActionButton>
-          <ActionButton :isBiger="true">Cancel</ActionButton>
+          <ActionButton :isWider="true">Cancel</ActionButton>
         </form>
       </div>
     </div>

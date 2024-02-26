@@ -7,7 +7,7 @@
       isWhite ? 'bg-white text-black' : 'bg-black text-white',
       isColored && !isWhite ? 'bg-blue' : 'bg-black',
       biggerBorderRadius ? 'rounded-[8px]' : 'rounded-[6px] md:rounded-[8px]',
-      isBiger ? 'md:w-[160px] w-[100px]' : 'w-auto'
+      isWider ? 'md:w-[160px] w-[100px]' : 'w-auto'
     ]"
     data-test="ActionButtonMainBtn"
   >
@@ -29,7 +29,7 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  isBiger: {
+  isWider: {
     type: Boolean,
     default: false
   }
