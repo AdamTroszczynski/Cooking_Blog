@@ -82,9 +82,19 @@ jobs:
         run: |
             cd server
             (npm run start&)
+        env:
+          PORT: 8080
+          DB_USER: postgres
+          DB_HOST: localhost
+          DB_NAME: cookingBlog_test
+          DB_PASSWORD: postgres
+          DB_PORT: 5432
+          TOKEN_KEY: YmzhMlFZX4rIUNxF5SxpUaGcaUexhQJs
 
       - name: Wait for Backend to Start
         run: sleep 10
 
       - name: Run Tests
-        run: npm test
+        run: |
+            cd server
+            npm test
