@@ -4,7 +4,7 @@
       <h3 class="text-black font-merri text-[1.25rem] w-[223px] text-center"><slot></slot></h3>
       <div class="modal-action w-full">
         <form method="dialog" class="flex justify-between w-full">
-          <ActionButton @click-action="buttonFunction()" :isWhite="true" :isBiger="true" class="relative">
+          <ActionButton @click-action="buttonFunction()" :isWhite="true" :isWider="true" class="relative">
           <div class="absolute z-10 bg-white md:top-[-20px] md:left-[85%] top-[-20px] left-[75%]"><DessertIcon></DessertIcon></div>
           {{ actionButtonText }}
           </ActionButton>

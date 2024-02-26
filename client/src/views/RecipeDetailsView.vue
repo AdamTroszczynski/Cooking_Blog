@@ -135,6 +135,7 @@ const deleteRecipe = async (): Promise<void> => {
   const token = userStore.token;
   await removeRecipe(recipeId, token);
   recipesStore.userRecipes = recipesStore.userRecipes.filter(el => el.recipeId != recipeId);
+  recipesStore.exploreRecipes = recipesStore.exploreRecipes.filter(el => el.recipeId != recipeId);
   router.push({ name: 'myRecipes'});
 };
 
