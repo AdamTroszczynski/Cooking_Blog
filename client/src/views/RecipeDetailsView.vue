@@ -90,6 +90,7 @@ import { useUserStore } from '@/stores/userStore';
 import Recipe from '@/models/Recipe';
 import { STATIC_IMAGES_URL } from '@/const/commonConst';
 import testRecipeImage from '@/assets/images/TestRecipeImage.jpg';
+import { removeRecipe } from '@/services/recipesServices';
 
 import ViewWrapper from '@/components/layout/ViewWrapper.vue';
 import NavigationBar from '@/components/common/NavigationBar.vue';
@@ -128,8 +129,12 @@ const editRecipe = (): void => {
 };
 
 /** Delete current recipe */
-const deleteRecipe = (): void => {
-  console.log('Delete recipe');
+const deleteRecipe = async (): Promise<void> => {
+  const recipeId = recipe.value.recipeId;
+  const token = userStore.token;
+  await removeRecipe(recipeId, token);
+  recipesStore.userRecipes = recipesStore.userRecipes.filter(el => el.recipeId != recipeId);
+  router.push({ name: 'myRecipes'});
 };
 
 /** Add to favorite or remove from favorite */
@@ -141,4 +146,5 @@ const addRemoveFavorite = (): void => {
 const likeDislike = (): void => {
   console.log('Like or dislike recipe');
 };
+
 </script>
