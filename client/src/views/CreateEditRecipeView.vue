@@ -222,7 +222,7 @@ const save = async (): Promise<void> => {
     await uploadRecipeImage(imageToUpload.value, userStore.user!.userId, userStore.token, previousImage.value);
   }
 
-  router.push({ name: 'home' });
+  router.push({ name: 'myRecipes' });
 };
 
 /** Cancel operation and redirect to home view */
