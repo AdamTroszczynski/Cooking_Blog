@@ -32,7 +32,7 @@
 
               <div v-if="showExtraControls" class="flex gap-x-[12px] xl:gap-x-[14px]">
                 <ActionButton @click-action="editRecipe()" is-colored>Edit</ActionButton>
-                <ActionButton @click-action="deleteRecipe()">Delete</ActionButton>
+                <ActionButton onclick="deletionPopup.showModal()">Delete</ActionButton>
               </div>
             </div>
 
@@ -77,7 +77,7 @@
         </main>
       </div>
     </div>
-
+    <ActionPopup popup-id="deletionPopup" :buttonFunction="deleteRecipe" :actionButtonText="'Yes'">Do you want to delete this recipe</ActionPopup>
     <ClassicFooter />
   </ViewWrapper>
 </template>
@@ -100,6 +100,7 @@ import StarIcon from '@/components/icons/common/StarIcon.vue';
 import HeartIcon from '@/components/icons/common/HeartIcon.vue';
 import IngredientsCard from '@/components/cards/IngredientsCard.vue';
 import StepCard from '@/components/cards/StepCard.vue';
+import ActionPopup from '@/components/modals/ActionPopup.vue';
 
 const router = useRouter();
 const recipesStore = useRecipesStore();
@@ -136,6 +137,7 @@ const deleteRecipe = async (): Promise<void> => {
   recipesStore.userRecipes = recipesStore.userRecipes.filter(el => el.recipeId != recipeId);
   router.push({ name: 'myRecipes'});
 };
+
 
 /** Add to favorite or remove from favorite */
 const addRemoveFavorite = (): void => {
