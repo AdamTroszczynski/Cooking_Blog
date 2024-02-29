@@ -78,18 +78,21 @@ jobs:
             cd server
             npm install -s
 
+      - name: Prepare .env.test.local
+        run: |
+            cd server
+            touch .env.test.local
+            echo PORT=8080
+            echo DB_USER="postgres" >> .env.test.local
+            echo DB_HOST="localhost" >> .env.test.local
+            echo DB_NAME="cookingBlog_test" >> .env.test.local
+            echo DB_PASSWORD="postgres" >> .env.test.local
+            echo DB_PORT=5432 >> .env.test.local
+
       - name: Start backend service (API)
         run: |
             cd server
             (npm run start&)
-        env:
-          PORT: 8080
-          DB_USER: postgres
-          DB_HOST: localhost
-          DB_NAME: cookingBlog_test
-          DB_PASSWORD: postgres
-          DB_PORT: 5432
-          TOKEN_KEY: YmzhMlFZX4rIUNxF5SxpUaGcaUexhQJs
 
       - name: Wait for Backend to Start
         run: sleep 10
