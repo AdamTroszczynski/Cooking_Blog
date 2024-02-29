@@ -10,6 +10,11 @@ describe('recipeApi', (): void => {
 
   describe('/recipes', (): void => {
     it('[GET] It should response all recipes', async (): Promise<void> => {
+      console.log(process.env.NODE_ENV);
+      console.log(process.env.DB_USER);
+      console.log(process.env.DB_PASSWORD);
+      console.log(process.env.PORT);
+
       return request(app)
         .get(`${RECIPE_API_PATH}/recipes`)
         .expect('Content-Type', /json/)
