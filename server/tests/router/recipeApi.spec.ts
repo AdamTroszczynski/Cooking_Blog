@@ -2,19 +2,20 @@ import request from 'supertest';
 import app from '@/app';
 import { client } from '@/services/db';
 import { RECIPE_API_PATH } from '@/const/commonConst';
+import { clearTables } from '@/services/adminServices';
+
 
 describe('recipeApi', (): void => {
+  beforeAll(async (): Promise<void> => {
+    await clearTables();
+  });
+
   afterAll(async (): Promise<void> => {
     await client.end();
   });
 
   describe('/recipes', (): void => {
     it('[GET] It should response all recipes', async (): Promise<void> => {
-      console.log(process.env.NODE_ENV);
-      console.log(process.env.DB_USER);
-      console.log(process.env.DB_PASSWORD);
-      console.log(process.env.PORT);
-
       return request(app)
         .get(`${RECIPE_API_PATH}/recipes`)
         .expect('Content-Type', /json/)
