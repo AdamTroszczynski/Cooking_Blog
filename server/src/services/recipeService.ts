@@ -55,6 +55,17 @@ export const getDishCategories = async (): Promise<QueryResult> => {
 };
 
 /**
+ * Create new dish category
+ * @param {number} dishTypeId ID of dish type
+ * @param {string} dishTypeName Name of dish type
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const createDishCategory = async (dishTypeId: number, dishTypeName: string): Promise<QueryResult> => {
+  const sql = 'INSERT INTO dishTypes (dishTypeId, dishTypeName) VALUES ($1, $2);';
+  return await query(sql, [dishTypeId, dishTypeName]);
+};
+
+/**
  * Get all difficult levels from database
  * @returns {Promise<QueryResult>} Query result
  */

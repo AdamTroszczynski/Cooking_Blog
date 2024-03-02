@@ -1,6 +1,5 @@
 import path from 'path';
 import dotenv from 'dotenv';
-import { existsSync } from 'fs';
 
 const APP_ROOT = path.resolve(__dirname);
 const DEV_ENV_PATH = `${APP_ROOT}/../.env`;

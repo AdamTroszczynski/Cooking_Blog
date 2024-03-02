@@ -82,7 +82,7 @@ jobs:
         run: |
             cd server
             touch .env.test.local
-            echo PORT=8080
+            echo PORT=8080 >> .env.test.local
             echo DB_USER="postgres" >> .env.test.local
             echo DB_HOST="localhost" >> .env.test.local
             echo DB_NAME="cookingBlog_test" >> .env.test.local
