@@ -75,6 +75,17 @@ export const getDifficultLevels = async (): Promise<QueryResult> => {
 };
 
 /**
+ * Create difficult level
+ * @param {number} difficultLevelId Difficult level id
+ * @param {string} levelName Name of the level
+ * @returns {Promise<QueryResult>} Query result
+ */
+export const createDifficultLevel = async (difficultLevelId: number, levelName: string): Promise<QueryResult> => {
+  const sql = 'INSERT INTO difficultlevels (difficultlevelid, levelname) VALUES ($1, $2);';
+  return await query(sql, [difficultLevelId, levelName]);
+};
+
+/**
  * Get last recipe from database
  * @returns {Promise<QueryResult>} Query result
  */
