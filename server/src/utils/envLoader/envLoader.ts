@@ -11,4 +11,4 @@ export const loadEnv = (): void => {
     override: true,
     path: process.env.NODE_ENV === 'test' ? TEST_ENV_PATH : DEV_ENV_PATH,
   });
-}
+};

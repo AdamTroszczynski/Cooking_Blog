@@ -142,8 +142,8 @@ export const getDifficultLevelsAction = async (req: Request, res: Response): Pro
  */
 const convertRecipeElements = (ingredientsToConvert: any, stepsToConvert: any): { convertedIngredients: string, convertedSteps: string } => {
   const convertedIngredients: string = ingredientsToConvert
-      .map((ingredient: Ingredient) => `${ingredient.name}/${ingredient.qua}`)
-      .join('|');
+    .map((ingredient: Ingredient) => `${ingredient.name}/${ingredient.qua}`)
+    .join('|');
 
   const convertedSteps: string = stepsToConvert
     .map((step: Step) => `${step.stepContent}`)
@@ -212,7 +212,7 @@ export const uploadRecipeImageAction = (req: Request, res: Response) => {
   // Move new image to specific user folder
   image.mv(__dirname + '/../public/recipeImages/' + userId + '/' + image.name.split(' ').join(''));
 
-  res.status(StatusCodesEnum.OK).json({ msg: 'Image uploaded successfully'});
+  res.status(StatusCodesEnum.OK).json({ msg: 'Image uploaded successfully' });
 };
 
 /**
