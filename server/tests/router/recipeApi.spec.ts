@@ -198,4 +198,26 @@ describe('recipeApi', (): void => {
         });
     });
   });
+
+  describe('/uploadRecipeImage', (): void => {
+    it('[POST] Should correctly save image on server', async (): Promise<void> => {
+      const token = jwt.sign(
+        { userid: 1, email: 'test@email.com' },
+        process.env.TOKEN_KEY || 'abcd1234',
+        { expiresIn: '1h' },
+      );
+
+      const testImage = `${__dirname}/../testData/ChocolateCake.jpg`;
+
+      return request(app)
+        .post(`${RECIPE_API_PATH}/uploadRecipeImage`)
+        .set('x-access-token', token)
+        .set('Content-Type', 'multipart/form-data')
+        .attach('files[]', testImage)
+        .field('userId', 1)
+        .then((res) => {
+
+        });
+    });
+  });
 });
