@@ -53,7 +53,58 @@ describe('recipeApi', (): void => {
 
   describe('/recipesPage', (): void => {
     it('[GET] Should return single recipes page (with pagination)', async (): Promise<void> => {
+      const lastId = 1;
+      const dishTypeId = 2;
+      const limit = 2;
 
+      return request(app)
+        .get(`${RECIPE_API_PATH}/recipesPage?lastId=${lastId}&dishTypeId=${dishTypeId}&limit=${limit}`)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((res) => {
+          expect(res.statusCode).toBe(200);
+          expect(Array.isArray(res.body)).toBeTruthy();
+          expect(res.body.length).toEqual(2);
+        });
+    });
+  });
+
+  describe('/recipesPageUser', (): void => {
+    it('[GET] Should return single recipes page (with pagination)', async (): Promise<void> => {
+      const lastId = 1;
+      const dishTypeId = 2;
+      const limit = 2;
+      const userId = 1;
+
+      const token = jwt.sign(
+        { userid: 1, email: 'test@email.com' },
+        process.env.TOKEN_KEY || 'abcd1234',
+        { expiresIn: '1h' },
+      );
+
+      return request(app)
+        .get(`${RECIPE_API_PATH}/recipesPageUser?lastId=${lastId}&dishTypeId=${dishTypeId}&limit=${limit}&userId=${userId}`)
+        .set('x-access-token', token)
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .then((res) => {
+          expect(res.statusCode).toBe(200);
+          expect(Array.isArray(res.body)).toBeTruthy();
+          expect(res.body.length).toEqual(2);
+        });
+    });
+  });
+
+  describe('/newestRecipes', (): void => {
+    it('[GET] Should return new added recipes from each dish category', async (): Promise<void> => {
+      return request(app)
+        .get(`${RECIPE_API_PATH}/newestRecipes`)
+        .expect(200)
+        .then((res) => {
+          expect(res.statusCode).toBe(200);
+          expect(Array.isArray(res.body)).toBeTruthy();
+          expect(res.body.length).toEqual(5);
+        });
     });
   });
 
