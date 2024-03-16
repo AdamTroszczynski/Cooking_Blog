@@ -21,6 +21,7 @@ import RequestError from '@/models/errors/RequestError';
 import type { UploadedFile } from 'express-fileupload';
 import Ingredient from '@/models/Ingredient';
 import Step from '@/models/Step';
+import { BASE_PROJECT_PATH } from '@/const/commonConst';
 
 /**
  * Get all recipes action
@@ -200,17 +201,17 @@ export const uploadRecipeImageAction = (req: Request, res: Response) => {
   }
 
   // Check if user folder exists, if not create them
-  if (!existsSync(__dirname + '/../public/recipeImages/' + userId)) {
-    mkdirSync(__dirname + '/../public/recipeImages/' + userId);
+  if (!existsSync(BASE_PROJECT_PATH + '/public/recipeImages/' + userId)) {
+    mkdirSync(BASE_PROJECT_PATH + '/public/recipeImages/' + userId);
   }
 
   // If exists, remove old image for recipe
-  if (previousImage !== '' && existsSync(__dirname + '/../public/recipeImages/' + previousImage)) {
-    rmSync(__dirname + '/../public/recipeImages/' + previousImage);
+  if (previousImage !== '' && existsSync(BASE_PROJECT_PATH + '/public/recipeImages/' + previousImage)) {
+    rmSync(BASE_PROJECT_PATH + '/public/recipeImages/' + previousImage);
   }
 
   // Move new image to specific user folder
-  image.mv(__dirname + '/../public/recipeImages/' + userId + '/' + image.name.split(' ').join(''));
+  image.mv(BASE_PROJECT_PATH + '/public/recipeImages/' + userId + '/' + image.name.split(' ').join(''));
 
   res.status(StatusCodesEnum.OK).json({ msg: 'Image uploaded successfully' });
 };

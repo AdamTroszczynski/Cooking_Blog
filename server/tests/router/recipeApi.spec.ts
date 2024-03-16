@@ -2,10 +2,11 @@ import request from 'supertest';
 import app from '@/app';
 import jwt from 'jsonwebtoken';
 import { client } from '@/services/db';
-import { RECIPE_API_PATH } from '@/const/commonConst';
+import { RECIPE_API_PATH, BASE_PROJECT_PATH } from '@/const/commonConst';
 import { clearTables } from '@/services/adminServices';
 import { createTestingData } from '@/utils/testDataCreator/recipeDataCreator';
 import Recipe from '@/models/Recipe';
+import { existsSync, rmSync } from 'fs';
 
 describe('recipeApi', (): void => {
   beforeAll(async (): Promise<void> => {
@@ -47,6 +48,12 @@ describe('recipeApi', (): void => {
           expect(recipeObj.recipeImage).toBe('testImage.png');
           expect(recipeObj.likesCount).toBe(0);
         });
+    });
+  });
+
+  describe('/recipesPage', (): void => {
+    it('[GET] Should return single recipes page (with pagination)', async (): Promise<void> => {
+
     });
   });
 
@@ -207,16 +214,21 @@ describe('recipeApi', (): void => {
         { expiresIn: '1h' },
       );
 
-      const testImage = `${__dirname}/../testData/ChocolateCake.jpg`;
+      const userId = 1;
+      const imageName = 'ChocolateCake.jpg';
+      const testImage = `${BASE_PROJECT_PATH}/tests/testData/${imageName}`;
+      const expectedImage = `${BASE_PROJECT_PATH}/public/recipeImages/${userId}/${imageName}`;
 
       return request(app)
         .post(`${RECIPE_API_PATH}/uploadRecipeImage`)
         .set('x-access-token', token)
         .set('Content-Type', 'multipart/form-data')
         .attach('files[]', testImage)
-        .field('userId', 1)
+        .field('userId', userId)
+        .expect(200)
         .then((res) => {
-
+          expect(existsSync(expectedImage)).toBeTruthy();
+          rmSync(expectedImage);
         });
     });
   });
